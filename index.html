@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Card Search</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="search-bar">
+        <h1>Pokémon Card Search</h1>
+        <input type="text" id="searchInput" placeholder="Enter Pokémon card name...">
+        <select id="sortDropdown">
+            <option value="date-new">Release Date (Newest)</option>
+            <option value="date-old">Release Date (Oldest)</option>
+            <option value="price-high">Price (Highest)</option>
+            <option value="price-low">Price (Lowest)</option>
+        </select>
+    </div>
+    <div id="resultsContainer" class="results"></div>
+    <script src="app.js"></script>
+</body>
+</html>
