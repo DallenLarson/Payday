@@ -1,68 +1,191 @@
+/* General Body Styles */
 body {
+    background-color: #1a1a1a;
+    color: #ffffff;
     font-family: Arial, sans-serif;
     margin: 0;
-    background-color: #f5f5f5;
+    padding: 0;
 }
 
+/* Search Bar */
 .search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #121212;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: fixed;
     top: 0;
-    left: 0;
     width: 100%;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     text-align: center;
 }
 
 .search-bar h1 {
-    margin: 0;
     font-size: 1.5em;
+    color: #ffffff;
+    margin: 0;
 }
 
 #searchInput {
     width: 80%;
     max-width: 400px;
     padding: 10px;
-    font-size: 1.2em;
-    margin-top: 10px;
+    font-size: 1em;
+    margin: 10px;
+    color: #ffffff;
+    background-color: #2a2a2a;
+    border: 1px solid #555;
+    border-radius: 4px;
 }
 
+#searchInput::placeholder {
+    color: #888;
+}
+
+/* Sort Dropdown */
+#sortDropdown {
+    padding: 8px;
+    font-size: 1em;
+    color: #ffffff;
+    background-color: #2a2a2a;
+    border: 1px solid #555;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+/* Logo Styling */
+.logo {
+    height: 40px; /* Adjust as needed */
+    width: auto;
+    margin-right: 15px; /* Space between logo and search input */
+    vertical-align: middle;
+}
+
+
+/* Portfolio Button */
+.portfolio-button {
+    background-color: #0073e6;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 4px;
+    position: absolute;
+    top: 20px;
+    right: 50px;
+    text-decoration: none;
+}
+
+.portfolio-button:hover {
+    background-color: #005bb5;
+}
+
+/* Results Section */
 .results {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-    padding-top: 120px; /* Add padding to prevent overlap with the search bar */
+    padding-top: 150px; /* Prevent overlap with the search bar */
     justify-content: center;
 }
 
+/* Card Styles */
 .card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100px;
+    background-color: #2a2a2a;
+    padding: 10px;
+    width: 120px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
 }
 
 .card img {
     width: 100px;
     height: auto;
-    border-radius: 8px;
+    border-radius: 4px;
+    margin-bottom: 5px;
 }
 
 .price {
     margin-top: 5px;
     font-weight: bold;
+    color: #00ff9d;
 }
 
 .set-name {
     font-size: 0.9em;
-    color: #555;
+    color: #aaaaaa;
     margin-top: 2px;
 }
 
-#sortDropdown {
+/* Card Name Link Styling */
+.card a {
+    text-decoration: none; /* Remove underline from the link */
+    color: inherit;
+}
+
+.card a p {
+    color: #00ff9d; /* Bright green for the card name */
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.card a p:hover {
+    color: #ffffff; /* Change to white on hover for better visibility */
+}
+
+
+/* Loading Spinner */
+.loading-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #0073e6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 1000;
+}
+
+@keyframes spin {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Hide results while loading */
+.loading .results {
+    display: none;
+}
+
+.quick-add-button {
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    cursor: pointer;
+    border-radius: 4px;
     margin-top: 10px;
-    padding: 8px;
-    font-size: 1em;
+    transition: background-color 0.2s;
+}
+
+.quick-add-button:hover {
+    background-color: #218838;
 }

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payday | Ny Portfolio</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="portfolio.css">
+</head>
+<body>
+    <header class="portfolio-header">
+        
+        <img src="logo.png" alt="Pokémon Card Search Logo" class="logo">
+        <button class="back-button" onclick="goToIndex()">← Back to Search</button>
+    </header>
+
+    <div id="portfolioContainer" class="portfolio-container">
+        <!-- Total Collection Value Section -->
+        <section class="total-value-section">
+            <h2>Total Collection Value</h2>
+            <p id="totalValue" class="total-value">Loading...</p>
+            <!-- Export and Import Portfolio Buttons -->
+            <button class="export-button" onclick="exportPortfolio()">Export Portfolio</button>
+            <input type="file" id="importFileInput" style="display: none;" onchange="importPortfolio(event)">
+            <button class="import-button" onclick="document.getElementById('importFileInput').click()">Import Portfolio</button>
+        </section>
+
+        <!-- Card List Section -->
+        <section class="card-list-section">
+            <h2>Your Collection</h2>
+            <div id="cardList" class="card-list"></div>
+        </section>
+    </div>
+
+    <script src="portfolio.js"></script>
+</body>
+</html>

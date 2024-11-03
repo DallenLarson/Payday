@@ -1,0 +1,176 @@
+/* Portfolio Container */
+body {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.portfolio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #121212;
+    border-bottom: 1px solid #333;
+}
+
+.portfolio-header h1 {
+    font-size: 1.8em;
+    color: #ffffff;
+}
+
+.back-button {
+    background-color: #333;
+    color: #ffffff;
+    border: none;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.back-button:hover {
+    background-color: #555;
+}
+
+/* Logo Styling */
+.logo {
+    height: 40px; /* Adjust as needed */
+    width: auto;
+    margin-right: 15px; /* Space between logo and search input */
+    vertical-align: middle;
+}
+
+
+.portfolio-container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Total Value Section */
+.total-value-section {
+    background-color: #1f1f1f;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.total-value-section h2 {
+    font-size: 1.2em;
+    margin: 0;
+    color: #aaaaaa;
+}
+
+.total-value {
+    font-size: 2em;
+    font-weight: bold;
+    color: #00ff9d;
+    margin-top: 10px;
+}
+
+/* Card List Section */
+.card-list-section {
+    background-color: #1f1f1f;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.card-list-section h2 {
+    font-size: 1.2em;
+    color: #aaaaaa;
+    margin-bottom: 10px;
+}
+
+.card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+/* Card Entry */
+.card-entry {
+    display: flex;
+    align-items: center;
+    background-color: #2a2a2a;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s;
+}
+
+.card-entry:hover {
+    transform: scale(1.02);
+}
+
+.portfolio-card-image {
+    width: 60px;
+    height: 80px;
+    border-radius: 4px;
+    margin-right: 15px;
+}
+
+.card-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-details p {
+    margin: 0;
+    color: #cccccc;
+    font-size
+}
+
+.remove-button {
+    background-color: #ff4d4f;
+    color: #ffffff;
+    border: none;
+    padding: 6px 12px;
+    font-size: 0.8em;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: auto;
+    transition: background-color 0.2s;
+}
+
+.remove-button:hover {
+    background-color: #d9363e;
+}
+
+.export-button {
+    background-color: #0073e6;
+    color: #ffffff;
+    border: none;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+
+.export-button:hover {
+    background-color: #005bb5;
+}
+
+.import-button {
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-left: 10px;
+    transition: background-color 0.2s;
+}
+
+.import-button:hover {
+    background-color: #218838;
+}

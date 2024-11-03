@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payday | Loading... </title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="card.css">
+</head>
+<body>
+    
+    <img src="logo.png" alt="Pokémon Card Search Logo" class="logo">
+    <button class="back-button" onclick="goToIndex()">← Back</button>
+    <button class="portfolio-button" onclick="goToPortfolio()">Portfolio</button>
+    <div class="card-container">
+        <div class="card-image">
+            <img id="cardImage" alt="Card Image">
+        </div>
+        <div class="card-details">
+            <h1 id="cardName">Loading...</h1>
+            <h2 id="cardSet">Set Name</h2>
+            <p class="product-line">Product Details</p>
+
+            <div class="product-details">
+                <p><strong>Rarity:</strong> <span id="cardRarity"></span></p>
+                <p><strong>Number:</strong> <span id="cardNumber"></span></p>
+                <p><strong>Card Type:</strong> <span id="cardType"></span></p>
+                <p><strong>Card Subtype:</strong> <span id="cardClass"></span></p>
+                <p><strong>Element:</strong> <span id="cardElement"></span></p>
+            </div>
+
+            <div class="price-section">
+                <h3 id="cardPrice">Price: Loading...</h3>
+                <button class="buy-button" onclick="addToPortfolio()">Add to Portfolio</button>
+            </div>
+
+            <div class="price-chart-container">
+                <h3>Price History (Last 3 Months)</h3>
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <script src="card.js"></script>
+</body>
+</html>
