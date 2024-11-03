@@ -7,7 +7,7 @@ body {
     padding: 0;
 }
 
-/* Search Bar */
+/* Default search-bar layout */
 .search-bar {
     display: flex;
     align-items: center;
@@ -20,6 +20,7 @@ body {
     width: 100%;
     z-index: 1000;
     text-align: center;
+    gap: 10px; /* Space between items */
 }
 
 .search-bar h1 {
@@ -188,4 +189,37 @@ body {
 
 .quick-add-button:hover {
     background-color: #218838;
+}
+
+
+/* Media query for mobile and narrow screens */
+@media (max-width: 768px) {
+    .search-bar {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center;    /* Center-align all items */
+        padding: 10px;          /* Reduce padding for mobile */
+    }
+    
+    .logo {
+        margin-bottom: 10px; /* Add space below the logo */
+    }
+
+    #searchInput, #sortDropdown {
+        width: 90%;           /* Full width on mobile */
+        margin: 20px 0;       /* Margin above and below */
+    }
+
+    .portfolio-button {
+        position: static;      /* Remove absolute positioning */
+        margin-top: 10px;      /* Space between logo and button */
+        align-self: center;    /* Center the button */
+    }
+    
+.results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-top: 350px; /* Prevent overlap with the search bar */
+    justify-content: center;
+}
 }

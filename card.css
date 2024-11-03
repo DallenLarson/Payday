@@ -165,3 +165,43 @@ body {
     margin-right: 15px; /* Space between logo and search input */
     vertical-align: middle;
 }
+
+/* Mobile Layout */
+@media (max-width: 768px) {
+    .card-container {
+        display: block;
+        text-align: center;
+        padding: 10px;
+    }
+
+    /* Move the logo above the card */
+    .logo {
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+
+    /* Center the card image */
+    .card-image img {
+        margin: 0 auto;
+        display: block;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    /* Adjust card details to be below the image */
+    .card-details {
+        padding: 0;
+        margin-top: 20px;
+    }
+
+    /* Adjust text alignment for card details */
+    .card-details h1,
+    .card-details h2,
+    .product-line,
+    .product-details,
+    .price-section,
+    .price-chart-container {
+        text-align: center;
+    }
+
+}
