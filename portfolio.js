@@ -93,6 +93,7 @@ function loadPortfolio(sortBy = 'alphabet') {
 }
 
 // Check if the user has an active subscription and display appropriate messages
+/*
 function checkSubscriptionStatus() {
     fetch('/check-subscription', { method: 'GET' }) // replace with your backend endpoint
         .then(response => response.json())
@@ -104,7 +105,17 @@ function checkSubscriptionStatus() {
             }
         })
         .catch(error => console.error('Subscription check error:', error));
+}*/
+function checkSubscriptionStatus() {
+    const isSubscribed = false;  // Set to `true` if you want to show the thank-you message
+
+    if (isSubscribed) {
+        displayThankYouMessage();
+    } else {
+        displaySubscriptionPrompt();
+    }
 }
+
 
 // Display a thank-you message for premium subscribers
 function displayThankYouMessage() {
