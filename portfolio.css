@@ -138,6 +138,28 @@ body {
     transition: background-color 0.2s;
 }
 
+.thank-you-message, .prompt-message {
+    font-size: 1.2em;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.subscribe-button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.subscribe-button:hover {
+    background-color: #218838;
+}
+
+
 .remove-button:hover {
     background-color: #d9363e;
 }

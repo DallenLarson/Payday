@@ -1,3 +1,7 @@
+// Import necessary Firebase methods
+import { auth } from "./firebaseConfig.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
+
 // Go back to the main search page
 function goToIndex() {
     window.location.href = 'index.html';
@@ -44,7 +48,7 @@ function loadPortfolio(sortBy = 'alphabet') {
 
         // Create clickable area with link
         const cardLink = document.createElement('a');
-        cardLink.href = `card.html?id=${card.id}`; // Link to card's individual page
+        cardLink.href = `card.html?id=${card.id}`;
         cardLink.className = 'card-link';
 
         const cardImage = document.createElement('img');
@@ -70,7 +74,7 @@ function loadPortfolio(sortBy = 'alphabet') {
         removeButton.className = 'remove-button';
         removeButton.textContent = 'Remove';
         removeButton.onclick = (event) => {
-            event.preventDefault(); // Prevent the link from opening if removing the card
+            event.preventDefault();
             removeFromPortfolio(index);
         };
 
@@ -78,15 +82,52 @@ function loadPortfolio(sortBy = 'alphabet') {
         cardDetails.appendChild(cardName);
         cardDetails.appendChild(cardPrice);
         cardLink.appendChild(cardImage);
-        cardLink.appendChild(cardDetails); // Only image and details are clickable
+        cardLink.appendChild(cardDetails);
         cardContainer.appendChild(cardLink);
-        cardContainer.appendChild(removeButton); // Remove button outside link
-
+        cardContainer.appendChild(removeButton);
         cardList.appendChild(cardContainer);
     });
 
     // Display the total collection value
     totalValueElement.textContent = `$${totalValue.toFixed(2)}`;
+}
+
+// Check if the user has an active subscription and display appropriate messages
+function checkSubscriptionStatus() {
+    fetch('/check-subscription', { method: 'GET' }) // replace with your backend endpoint
+        .then(response => response.json())
+        .then(data => {
+            if (data.subscribed) {
+                displayThankYouMessage();
+            } else {
+                displaySubscriptionPrompt();
+            }
+        })
+        .catch(error => console.error('Subscription check error:', error));
+}
+
+// Display a thank-you message for premium subscribers
+function displayThankYouMessage() {
+    const portfolioContainer = document.getElementById('portfolioContainer');
+    const thankYouMessage = document.createElement('p');
+    thankYouMessage.textContent = "Thank you for being a premium subscriber!";
+    thankYouMessage.className = 'thank-you-message';
+    portfolioContainer.prepend(thankYouMessage);
+}
+
+// Display a prompt for users to subscribe
+function displaySubscriptionPrompt() {
+    const portfolioContainer = document.getElementById('portfolioContainer');
+    const promptMessage = document.createElement('p');
+    promptMessage.textContent = "Unlock premium features with a subscription!";
+    promptMessage.className = 'prompt-message';
+    portfolioContainer.prepend(promptMessage);
+
+    const subscribeButton = document.createElement('button');
+    subscribeButton.textContent = "Subscribe Now";
+    subscribeButton.className = 'subscribe-button';
+    subscribeButton.onclick = () => window.location.href = '/subscribe.html';
+    portfolioContainer.prepend(subscribeButton);
 }
 
 // Function to handle sorting changes
@@ -98,9 +139,9 @@ function sortPortfolio(event) {
 // Function to remove a card from the portfolio
 function removeFromPortfolio(index) {
     let portfolio = JSON.parse(localStorage.getItem('portfolio')) || [];
-    portfolio.splice(index, 1); // Remove the card at the specified index
-    localStorage.setItem('portfolio', JSON.stringify(portfolio)); // Update local storage
-    loadPortfolio(); // Refresh the portfolio display
+    portfolio.splice(index, 1);
+    localStorage.setItem('portfolio', JSON.stringify(portfolio));
+    loadPortfolio();
 }
 
 // Function to export portfolio as a JSON file
@@ -124,30 +165,17 @@ function importPortfolio(event) {
     reader.onload = (e) => {
         try {
             const importedData = JSON.parse(e.target.result);
-
-            // Validate imported data
             if (!Array.isArray(importedData) || !importedData.every(item => item.name && item.price && item.id)) {
                 alert("Invalid portfolio file format.");
                 return;
             }
 
-            // Ask the user if they want to replace or merge
             const replacePortfolio = confirm("Do you want to replace your current portfolio with this imported file? Click 'OK' to replace or 'Cancel' to merge.");
-
             let portfolio = JSON.parse(localStorage.getItem('portfolio')) || [];
 
-            if (replacePortfolio) {
-                // Replace existing portfolio
-                portfolio = importedData;
-            } else {
-                // Merge imported data with existing portfolio
-                portfolio = portfolio.concat(importedData);
-            }
-
-            // Save the updated portfolio to local storage
+            portfolio = replacePortfolio ? importedData : portfolio.concat(importedData);
             localStorage.setItem('portfolio', JSON.stringify(portfolio));
-
-            loadPortfolio(); // Refresh the portfolio display
+            loadPortfolio();
             alert("Portfolio imported successfully!");
         } catch (error) {
             console.error("Error importing portfolio:", error);
@@ -157,5 +185,8 @@ function importPortfolio(event) {
     reader.readAsText(file);
 }
 
-// Load the portfolio when the page loads
-window.addEventListener('load', () => loadPortfolio());
+// Check authentication and subscription status
+window.addEventListener('load', () => {
+    loadPortfolio();
+    checkSubscriptionStatus();
+});

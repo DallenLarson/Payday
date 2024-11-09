@@ -249,4 +249,19 @@ body {
         width: 90%;
         text-align: center;
     }
+
+    
+/* Results Section */
+.results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding-top: 150px;
+    justify-content: center;
+}
+
+.promotion-image {
+    max-width: 200px;
+    border-radius: 8px;
+}
 }
