@@ -7,34 +7,35 @@ body {
     padding: 0;
 }
 
-/* Default search-bar layout */
+/* Sticky Header */
 .search-bar {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+    justify-content: space-between; /* Aligns sections to far left and right */
+    padding: 15px 30px;
     background-color: #121212;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 1000;
-    text-align: center;
-    gap: 10px; /* Space between items */
 }
 
-.search-bar h1 {
-    font-size: 1.5em;
-    color: #ffffff;
-    margin: 0;
+/* Left section styling */
+.left-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    height: 40px;
+    margin-right: 10px;
 }
 
 #searchInput {
-    width: 80%;
-    max-width: 400px;
-    padding: 10px;
+    width: 250px;
+    padding: 8px;
     font-size: 1em;
-    margin: 10px;
     color: #ffffff;
     background-color: #2a2a2a;
     border: 1px solid #555;
@@ -45,7 +46,6 @@ body {
     color: #888;
 }
 
-/* Sort Dropdown */
 #sortDropdown {
     padding: 8px;
     font-size: 1em;
@@ -53,35 +53,84 @@ body {
     background-color: #2a2a2a;
     border: 1px solid #555;
     border-radius: 4px;
-    margin-left: 10px;
 }
 
-/* Logo Styling */
+/* Right section styling */
+.right-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-right: 70px;
+}
+
+/* Background when search is empty */
+/* Make the logo larger */
 .logo {
-    height: 40px; /* Adjust as needed */
+    height: 60px; /* Adjust as needed for larger logo */
     width: auto;
-    margin-right: 15px; /* Space between logo and search input */
+    margin-right: 15px;
     vertical-align: middle;
 }
 
-
-/* Portfolio Button */
-.portfolio-button {
-    background-color: #0073e6;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1em;
-    cursor: pointer;
-    border-radius: 4px;
-    position: absolute;
-    top: 20px;
-    right: 50px;
-    text-decoration: none;
+/* Background when search is empty, without repeat */
+.background-active {
+    background-image: url('index-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; /* Prevents background from repeating */
+    background-attachment: fixed; /* Keeps background fixed while scrolling */
 }
 
-.portfolio-button:hover {
+/* Promotion image container */
+.promotion-container {
+    position: fixed;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+    z-index: 500;
+}
+
+.promotion-image {
+    max-width: 700px;
+    border-radius: 8px;
+}
+
+
+/* Navigation button styling */
+.nav-button {
+    background-color: #0073e6;
+    color: #ffffff;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-button:hover {
     background-color: #005bb5;
+    transform: scale(1.05);
+}
+
+/* Red Logout button styling */
+.logout-button {
+    background-color: #d9534f;
+    color: #ffffff;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+
+.logout-button:hover {
+    background-color: #c9302c;
+    transform: scale(1.05);
 }
 
 /* Results Section */
@@ -89,7 +138,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-    padding-top: 150px; /* Prevent overlap with the search bar */
+    padding-top: 150px;
     justify-content: center;
 }
 
@@ -128,23 +177,6 @@ body {
     color: #aaaaaa;
     margin-top: 2px;
 }
-
-/* Card Name Link Styling */
-.card a {
-    text-decoration: none; /* Remove underline from the link */
-    color: inherit;
-}
-
-.card a p {
-    color: #00ff9d; /* Bright green for the card name */
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-.card a p:hover {
-    color: #ffffff; /* Change to white on hover for better visibility */
-}
-
 
 /* Loading Spinner */
 .loading-spinner {
@@ -191,35 +223,30 @@ body {
     background-color: #218838;
 }
 
-
-/* Media query for mobile and narrow screens */
+/* Media query for mobile */
 @media (max-width: 768px) {
     .search-bar {
-        flex-direction: column; /* Stack items vertically */
-        align-items: center;    /* Center-align all items */
-        padding: 10px;          /* Reduce padding for mobile */
-    }
-    
-    .logo {
-        margin-bottom: 10px; /* Add space below the logo */
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
     }
 
-    #searchInput, #sortDropdown {
-        width: 90%;           /* Full width on mobile */
-        margin: 20px 0;       /* Margin above and below */
+    .left-section,
+    .right-section {
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
     }
 
-    .portfolio-button {
-        position: static;      /* Remove absolute positioning */
-        margin-top: 10px;      /* Space between logo and button */
-        align-self: center;    /* Center the button */
+    #searchInput,
+    #sortDropdown {
+        width: 90%;
+        margin: 10px 0;
     }
-    
-.results {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    padding-top: 350px; /* Prevent overlap with the search bar */
-    justify-content: center;
-}
+
+    .nav-button,
+    .logout-button {
+        width: 90%;
+        text-align: center;
+    }
 }

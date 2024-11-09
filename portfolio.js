@@ -4,17 +4,48 @@ function goToIndex() {
 }
 
 // Load and display the portfolio
-function loadPortfolio() {
+function loadPortfolio(sortBy = 'alphabet') {
     const portfolio = JSON.parse(localStorage.getItem('portfolio')) || [];
     const cardList = document.getElementById('cardList');
     const totalValueElement = document.getElementById('totalValue');
 
-    let totalValue = 0;
-    cardList.innerHTML = ''; // Clear existing content
+    // Clear existing content
+    cardList.innerHTML = '';
 
+    // Hide portfolio if empty
+    if (portfolio.length === 0) {
+        cardList.innerHTML = "<p>No Cards Added.</p>";
+        totalValueElement.textContent = "$0.00";
+        return;
+    }
+
+    // Sort portfolio based on selected option
+    switch (sortBy) {
+        case 'alphabet':
+            portfolio.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        case 'releaseDate':
+            portfolio.sort((a, b) => {
+                const dateA = new Date(a.releaseDate || '1970-01-01');
+                const dateB = new Date(b.releaseDate || '1970-01-01');
+                return dateA - dateB;
+            });
+            break;
+        case 'price':
+            portfolio.sort((a, b) => (a.price || 0) - (b.price || 0));
+            break;
+    }
+
+    // Display sorted cards
+    let totalValue = 0;
     portfolio.forEach((card, index) => {
-        const cardElement = document.createElement('div');
-        cardElement.className = 'card-entry';
+        const cardContainer = document.createElement('div');
+        cardContainer.className = 'card-entry';
+
+        // Create clickable area with link
+        const cardLink = document.createElement('a');
+        cardLink.href = `card.html?id=${card.id}`; // Link to card's individual page
+        cardLink.className = 'card-link';
 
         const cardImage = document.createElement('img');
         cardImage.src = `https://images.pokemontcg.io/${card.id.split('-')[0]}/${card.id.split('-')[1]}.png`;
@@ -34,23 +65,34 @@ function loadPortfolio() {
 
         totalValue += card.price;
 
-        // Remove button
+        // Remove button (outside the link)
         const removeButton = document.createElement('button');
         removeButton.className = 'remove-button';
         removeButton.textContent = 'Remove';
-        removeButton.onclick = () => removeFromPortfolio(index);
+        removeButton.onclick = (event) => {
+            event.preventDefault(); // Prevent the link from opening if removing the card
+            removeFromPortfolio(index);
+        };
 
-        // Append details and remove button to card entry
+        // Append elements to create a clean layout
         cardDetails.appendChild(cardName);
         cardDetails.appendChild(cardPrice);
-        cardElement.appendChild(cardImage);
-        cardElement.appendChild(cardDetails);
-        cardElement.appendChild(removeButton);
-        cardList.appendChild(cardElement);
+        cardLink.appendChild(cardImage);
+        cardLink.appendChild(cardDetails); // Only image and details are clickable
+        cardContainer.appendChild(cardLink);
+        cardContainer.appendChild(removeButton); // Remove button outside link
+
+        cardList.appendChild(cardContainer);
     });
 
     // Display the total collection value
     totalValueElement.textContent = `$${totalValue.toFixed(2)}`;
+}
+
+// Function to handle sorting changes
+function sortPortfolio(event) {
+    const sortBy = event.target.value;
+    loadPortfolio(sortBy);
 }
 
 // Function to remove a card from the portfolio
@@ -116,4 +158,4 @@ function importPortfolio(event) {
 }
 
 // Load the portfolio when the page loads
-window.addEventListener('load', loadPortfolio);
+window.addEventListener('load', () => loadPortfolio());

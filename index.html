@@ -3,34 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payday | Home</title>
+    <title>Home | Payday</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="search-bar">
-        <!-- Logo Image -->
-    <a href="index.html">
-        <img src="logo.png" alt="Pokémon Card Search Logo" class="logo">
-    </a>
+    <header class="search-bar">
+        <div class="left-section">
+            <a href="index.html">
+                <img src="logo.png" alt="Pokémon Card Search Logo" class="logo">
+            </a>
+            <input type="text" id="searchInput" placeholder="Enter Pokémon card name...">
+            <select id="sortDropdown">
+                <option value="date-new">Release Date (Newest)</option>
+                <option value="date-old">Release Date (Oldest)</option>
+                <option value="price-high">Price (Highest)</option>
+                <option value="price-low">Price (Lowest)</option>
+                <option value="set-name">Set Name (A-Z)</option>
+            </select>
+        </div>
         
-        <input type="text" id="searchInput" placeholder="Enter Pokémon card name...">
-        <select id="sortDropdown">
-            <option value="date-new">Release Date (Newest)</option>
-            <option value="date-old">Release Date (Oldest)</option>
-            <option value="price-high">Price (Highest)</option>
-            <option value="price-low">Price (Lowest)</option>
-            <option value="set-name">Set Name (A-Z)</option>
-        </select>
-        
-        <!-- Portfolio Button -->
-        <a href="portfolio.html" class="portfolio-button">Portfolio</a>
+        <div class="right-section">
+            <a href="scanner.html" class="nav-button">Scanner</a>
+            <a href="portfolio.html" class="nav-button">Portfolio</a>
+            <button id="logoutButton" class="logout-button" style="display: none;">Log Out</button>
+        </div>
+    </header>
+
+    <!-- Background and promotion container -->
+    <div id="promotionContainer" class="promotion-container">
+        <img src="sv-logo.png" alt="Surging Sparks - Out Now" class="promotion-image">
     </div>
 
     <!-- Loading animation -->
     <div id="loadingSpinner" class="loading-spinner" style="display: none;"></div>
 
     <div id="resultsContainer" class="results"></div>
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>

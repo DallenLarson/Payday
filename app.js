@@ -1,8 +1,13 @@
+import { auth } from "./firebaseConfig.js";
+import { onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
+
 const apiKey = '7e56dabe-1394-4d6e-aa3b-f7250070b899';
 const searchInput = document.getElementById('searchInput');
 const resultsContainer = document.getElementById('resultsContainer');
 const sortDropdown = document.getElementById('sortDropdown');
 const loadingSpinner = document.getElementById('loadingSpinner');
+const logoutButton = document.getElementById('logoutButton'); // Reference to the logout button
+
 let currentCards = [];
 
 // Show loading spinner
@@ -11,23 +16,55 @@ function showLoading() {
     document.body.classList.add('loading');
 }
 
+function toggleBackground() {
+    if (searchInput.value.trim() === "") {
+        document.body.classList.add("background-active");
+        promotionContainer.style.display = "block";
+    } else {
+        document.body.classList.remove("background-active");
+        promotionContainer.style.display = "none";
+    }
+}
+
+// Initialize background check on load
+toggleBackground();
+
 // Hide loading spinner
 function hideLoading() {
     loadingSpinner.style.display = 'none';
     document.body.classList.remove('loading');
 }
 
+// Check Firebase authentication state
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // User is signed in, display the logout button
+        logoutButton.style.display = 'inline-block';
+    } else {
+        // No user is signed in, redirect to login page
+        window.location.href = "login.html";
+    }
+});
+
+// Handle logout
+logoutButton.addEventListener('click', async () => {
+    await firebaseSignOut(auth);
+    window.location.href = "login.html"; // Redirect to login after logging out
+});
+
 // Event listener for search input
 searchInput.addEventListener('input', async (event) => {
     const query = event.target.value.trim();
+    toggleBackground();
+
     if (query.length < 3) return;
 
-    showLoading(); // Show loading spinner
+    showLoading();
 
     currentCards = await fetchCardData(query);
     displayResults(currentCards);
 
-    hideLoading(); // Hide loading spinner
+    hideLoading();
 });
 
 // Sort dropdown event listener
@@ -35,10 +72,15 @@ sortDropdown.addEventListener('change', () => {
     displayResults(currentCards);
 });
 
-// Fetch card data from the API based on query
+// Fetch card data from the API based on query (card name or set name)
 async function fetchCardData(query) {
     try {
-        const response = await fetch(`https://api.pokemontcg.io/v2/cards?q=name:${query}`, {
+        // If the query is "All", fetch without filters
+        const url = query.toLowerCase() === "all"
+            ? `https://api.pokemontcg.io/v2/cards`
+            : `https://api.pokemontcg.io/v2/cards?q=name:${query} OR set.name:${query}`;
+        
+        const response = await fetch(url, {
             headers: {
                 'X-Api-Key': apiKey,
                 'Accept': 'application/json',
@@ -51,6 +93,7 @@ async function fetchCardData(query) {
         return [];
     }
 }
+
 
 // Sort cards based on selected option
 function sortCards(cards) {
@@ -73,19 +116,13 @@ function sortCards(cards) {
 
 // Function to add card to portfolio
 function addToPortfolio(card) {
-    // Retrieve existing portfolio or create an empty array
     let portfolio = JSON.parse(localStorage.getItem('portfolio')) || [];
-
-    // Add the card to the portfolio
     portfolio.push({
         id: card.id,
         name: card.name,
         price: card.cardmarket?.prices.averageSellPrice || 0
     });
-
-    // Update the portfolio in local storage
     localStorage.setItem('portfolio', JSON.stringify(portfolio));
-
     alert(`${card.name} has been added to your portfolio!`);
 }
 
@@ -95,9 +132,12 @@ function displayResults(cards) {
     const sortedCards = sortCards([...cards]);
 
     sortedCards.forEach((card) => {
-        // Create a link element to wrap the card
+        const cardContainer = document.createElement('div');
+        cardContainer.className = 'card-container';
+
         const cardLink = document.createElement('a');
-        cardLink.href = `card.html?id=${card.id}`; // Link to card.html with the card ID as a parameter
+        cardLink.href = `card.html?id=${card.id}`;
+        cardLink.className = 'card-link';
 
         const cardElement = document.createElement('div');
         cardElement.className = 'card';
@@ -117,22 +157,19 @@ function displayResults(cards) {
         price.className = 'price';
         price.textContent = card.cardmarket ? `Price: $${card.cardmarket.prices.averageSellPrice.toFixed(2)}` : 'Price: N/A';
 
-        // Quick Add Button
-        const addButton = document.createElement('button');
-        addButton.textContent = 'Quick Add';
-        addButton.className = 'quick-add-button';
-        addButton.onclick = () => addToPortfolio(card); // Add card to portfolio on click
-
-        // Append elements to the card
         cardElement.appendChild(img);
         cardElement.appendChild(name);
         cardElement.appendChild(setName);
         cardElement.appendChild(price);
-        cardElement.appendChild(addButton); // Add the Quick Add button to the card
-
-        // Wrap the card element in the link
         cardLink.appendChild(cardElement);
-        resultsContainer.appendChild(cardLink);
+
+        const addButton = document.createElement('button');
+        addButton.textContent = 'Quick Add';
+        addButton.className = 'quick-add-button';
+        addButton.onclick = () => addToPortfolio(card);
+
+        cardContainer.appendChild(cardLink);
+        cardContainer.appendChild(addButton);
+        resultsContainer.appendChild(cardContainer);
     });
 }
-

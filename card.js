@@ -29,7 +29,7 @@ async function fetchCardDetails() {
             : 'Price: N/A';
 
         // Set the page title dynamically
-        document.title = `Payday | ${card.name} (${card.number}/${card.set.total}) - ${card.set.name} Details`;
+        document.title = `${card.name} (${card.number}/${card.set.total}) - ${card.set.name} | Payday`;
 
         // Mocked price data for demonstration (replace with actual data if available)
         const priceData = {
@@ -38,12 +38,19 @@ async function fetchCardDetails() {
         };
 
         // Render the price chart
+
+        updateMetaTags(card);
         renderPriceChart(priceData);
     } catch (error) {
         console.error('Error fetching card details:', error);
     }
 }
 
+function updateMetaTags(card) {
+    document.querySelector('meta[property="og:title"]').setAttribute("content", `Check ${card.name} out on Payday!`);
+    document.querySelector('meta[property="og:image"]').setAttribute("content", card.images.large);
+    document.title = `${card.name} | Payday`; // Update the page title
+}
 
 // Function to render the price chart using Chart.js
 function renderPriceChart(priceData) {

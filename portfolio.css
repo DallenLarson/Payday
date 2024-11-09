@@ -174,3 +174,26 @@ body {
 .import-button:hover {
     background-color: #218838;
 }
+
+/* Section Header */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.sort-dropdown {
+    background-color: #333;
+    color: #ffffff;
+    border: none;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.sort-dropdown:hover {
+    background-color: #555;
+}
