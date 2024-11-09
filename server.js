@@ -1,26 +1,38 @@
-// server.js (Node.js server)
-
+// Load environment variables from .env file
+require('dotenv').config();
 const express = require('express');
-const Stripe = require('stripe');
-const cors = require('cors');
+const stripe = require('stripe')(process.env.STRIPE_API_KEY); // Use Stripe API key from environment variables
+
 const app = express();
-app.use(cors());
+const PORT = process.env.PORT || 3000;
 
-const stripe = new Stripe('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'); // Replace with your Stripe Secret Key
+app.use(express.json());
 
-// Endpoint to check subscription status
-app.get('/check-subscription', async (req, res) => {
-  try {
-    const customerId = req.query.customerId; // Receive customer ID from the client
-    const subscriptions = await stripe.subscriptions.list({
-      customer: customerId,
-      status: 'active',
-    });
-    const isSubscribed = subscriptions.data.length > 0; // true if active subscriptions exist
-    res.json({ subscribed: isSubscribed });
-  } catch (error) {
-    res.status(500).send('Error checking subscription');
-  }
+// Example route to check subscription status
+app.post('/check-subscription', async (req, res) => {
+    const { userId } = req.body;
+
+    try {
+        // Your logic to check if user has an active subscription
+        // Example (assuming you have user subscription logic):
+        const customer = await stripe.customers.retrieve(userId);
+        const subscriptions = customer.subscriptions?.data || [];
+
+        const activeSubscription = subscriptions.some(
+            (sub) => sub.status === 'active'
+        );
+
+        if (activeSubscription) {
+            res.json({ message: 'Thank you for being a premium member!' });
+        } else {
+            res.json({ message: 'Please subscribe to access premium features.' });
+        }
+    } catch (error) {
+        console.error('Error checking subscription:', error);
+        res.status(500).json({ error: 'Failed to check subscription status' });
+    }
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
