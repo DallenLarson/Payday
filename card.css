@@ -204,4 +204,41 @@ body {
         text-align: center;
     }
 
+    
+}
+
+
+.nav-button {
+    background-color: #0073e6;
+    color: #ffffff;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-button:hover {
+    background-color: #005bb5;
+    transform: scale(1.05);
+}
+
+/* Red Logout button styling */
+.logout-button {
+    background-color: #d9534f;
+    color: #ffffff;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+
+.logout-button:hover {
+    background-color: #c9302c;
+    transform: scale(1.05);
 }

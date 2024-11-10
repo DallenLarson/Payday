@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | Payday</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 </head>
 <body>
     <!-- Header with logo and navigation -->
@@ -23,38 +25,50 @@
         </div>
     </header>
 
-    <div class="home-container">
-        <!-- Welcome Section -->
-        <div class="welcome-section section">
-            <h1>Welcome to Payday!</h1>
-            <p>Your all-in-one platform for tracking and scanning Pokémon cards with ease.</p>
+    <!-- Main Portfolio Section -->
+    <div class="portfolio-overview">
+        <h1>Investing</h1>
+        <h2 id="portfolioValue">$0.00</h2>
+        <p id="portfolioChange" class="green">▲ $0.00 (0%) This Week</p>
+        
+        <div class="chart-container">
+            <canvas id="portfolioChart"></canvas>
         </div>
 
-        <!-- About Section -->
-        <div class="about-section section">
-            <h2>What is Payday?</h2>
-            <p>Payday helps you manage and keep track of your Pokémon card collection, with tools to scan cards, add them to your portfolio, and view real-time values.</p>
+        <!-- Date Range Selector -->
+        <div class="date-range">
+            <button class="date-button" onclick="updateChart('1D')">1D</button>
+            <button class="date-button" onclick="updateChart('1W')">1W</button>
+            <button class="date-button" onclick="updateChart('1M')">1M</button>
         </div>
 
-        <!-- Scan Section -->
-        <div class="scan-section section">
-            <h2>Start Scanning Now!</h2>
-            <button class="quick-add-button" onclick="window.location.href='scanner.html'">Scan Your Cards</button>
+        <!-- Buying Power Section -->
+        <div class="buying-power">
+            <h3>Store Credit</h3>
+            <p>$0.00</p>
+            <h3>Card prices in your portfolio reflect recent sale prices on the market. Unlike stocks with stable, regulated pricing, physical card values can swing significantly based on individual sales and availability. This means your portfolio may fluctuate, especially if a card hasn’t sold recently or sells at a unique price. Rest assured, our database continuously updates to give you the most accurate snapshot of value, even with these shifts. We recommend viewing an average price over a week for a general sense of a card’s value—longer averages offer even more accuracy.
+            </h3>
         </div>
+        <!-- Card of the Day Section -->
+        <h1>Card of the Day</h1>
+        <a id="cardContainerLink" href="#" class="card-of-the-day-link">
+            <div class="card-of-the-day-container">
+                <!-- Background Image for Darkened Card Image -->
+                <img id="backgroundImage" alt="Card Background" class="card-background-image">
+                
+                <!-- Overlay Text Content -->
+                <div class="card-overlay">
+                    <h2 id="cardName">Loading...</h2>
+                </div>
+            </div>
+        </a>          
+        
+        </div>
+        
+        
 
-        <!-- Portfolio Section -->
-        <div class="portfolio-section section">
-            <h2>Your Current Portfolio</h2>
-            <button class="quick-add-button" onclick="window.location.href='portfolio.html'">View Portfolio</button>
-        </div>
     </div>
 
-    <!-- Footer Section -->
-    <footer class="footer">
-        For more information, see our <a href="#">Disclosures</a> and <a href="#">Privacy Policy</a>.<br>
-        Options are risky and aren’t suitable for all investors. To learn more, read the <a href="#">Options Disclosure Document</a>.
-    </footer>
-    <script type="module" src="homej.js"></script>
     <!-- Open Graph Meta Tags (for Discord, Facebook, etc.) -->
     <meta property="og:title" content="💸 Payday 💸">
     <meta property="og:description" content="Your all-in-one platform for tracking and scanning Pokémon cards with ease. Manage your collection, view real-time values, and more!">
@@ -67,5 +81,8 @@
     <meta name="twitter:description" content="Your all-in-one platform for tracking and scanning Pokémon cards with ease. Manage your collection, view real-time values, and more!">
     <meta name="twitter:image" content="https://dallenlarson.github.io/Payday/embed.jpg"> <!-- Update with the actual URL to embed.jpg -->
     <meta name="twitter:card" content="summary_large_image">
+    
+    <script type="module" src="homej.js"></script>
+    <script type="module" src="cardOfTheDay.js"></script>
 </body>
 </html>

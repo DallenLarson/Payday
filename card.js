@@ -1,10 +1,10 @@
-const apiKey = '7e56dabe-1394-4d6e-aa3b-f7250070b899';
-const urlParams = new URLSearchParams(window.location.search);
-const cardId = urlParams.get('id');
 import { auth } from "./firebaseConfig.js";
 import { db } from "./firebaseConfig.js";
 import { doc, setDoc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
+const apiKey = '7e56dabe-1394-4d6e-aa3b-f7250070b899';
+const urlParams = new URLSearchParams(window.location.search);
+const cardId = urlParams.get('id');
 // Fetch and display card details
 async function fetchCardDetails() {
     try {
