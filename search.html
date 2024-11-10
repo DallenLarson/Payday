@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search | Payday</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="search.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <header class="search-bar-search">
@@ -40,36 +42,37 @@
     <div id="loadingSpinner" class="loading-spinner" style="display: none;"></div>
 
     <div id="resultsContainer" class="results"></div>
+    
+    <!-- Mobile Navigation Footer -->
+    <footer class="mobile-nav-footer">
+        <a href="index.html" class="nav-icon" id="home-icon">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="search.html" class="nav-icon active" id="search-icon">
+            <i class="fas fa-search"></i>
+        </a>
+        <a href="scanner.html" class="nav-icon" id="scanner-icon">
+            <i class="fas fa-camera"></i>
+        </a>
+        <a href="portfolio.html" class="nav-icon" id="account-icon">
+            <i class="fas fa-user"></i>
+        </a>
+    </footer>
+
+    <!-- JavaScript -->
     <script type="module" src="app.js"></script>
+
+    <!-- Open Graph Meta Tags (for Discord, Facebook, etc.) -->
+    <meta property="og:title" content="💸 Payday 💸">
+    <meta property="og:description" content="Your all-in-one platform for tracking and scanning Pokémon cards with ease. Manage your collection, view real-time values, and more!">
+    <meta property="og:image" content="https://dallenlarson.github.io/Payday/embed.jpg">
+    <meta property="og:url" content="https://dallenlarson.github.io/Payday/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags (for Twitter) -->
+    <meta name="twitter:title" content="💸 Payday 💸">
+    <meta name="twitter:description" content="Your all-in-one platform for tracking and scanning Pokémon cards with ease. Manage your collection, view real-time values, and more!">
+    <meta name="twitter:image" content="https://dallenlarson.github.io/Payday/embed.jpg">
+    <meta name="twitter:card" content="summary_large_image">
 </body>
-
-<!-- Mobile Navigation Footer -->
-<footer class="mobile-nav-footer">
-    <a href="index.html" class="nav-icon" id="home-icon">
-        <i class="fas fa-home"></i>
-    </a>
-    <a href="search.html" class="nav-icon" id="search-icon">
-        <i class="fas fa-search"></i>
-    </a>
-    <a href="scanner.html" class="nav-icon" id="scanner-icon">
-        <i class="fas fa-camera"></i>
-    </a>
-    <a href="portfolio.html" class="nav-icon" id="account-icon">
-        <i class="fas fa-user"></i>
-    </a>
-</footer>
-
-<script type="module" src="homej.js"></script>
-<!-- Open Graph Meta Tags (for Discord, Facebook, etc.) -->
-<meta property="og:title" content="💸 Payday 💸">
-<meta property="og:description" content="Your all-in-one platform for tracking and scanning Pokémon cards with ease. Manage your collection, view real-time values, and more!">
-<meta property="og:image" content="https://dallenlarson.github.io/Payday/embed.jpg"> <!-- Update with the actual URL to embed.jpg -->
-<meta property="og:url" content="https://dallenlarson.github.io/Payday/"> <!-- Update with your actual site URL -->
-<meta property="og:type" content="website">
-
-<!-- Twitter Card Meta Tags (for Twitter) -->
-<meta name="twitter:title" content="💸 Payday 💸">
-<meta name="twitter:description" content="Your all-in-one platform for tracking and scanning Pokémon cards with ease. Manage your collection, view real-time values, and more!">
-<meta name="twitter:image" content="https://dallenlarson.github.io/Payday/embed.jpg"> <!-- Update with the actual URL to embed.jpg -->
-<meta name="twitter:card" content="summary_large_image">
 </html>

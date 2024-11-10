@@ -314,40 +314,22 @@ body {
 }
 
 
+.mobile-nav-footer {
+    display: none;
+}
+
+
+/* Show the mobile footer on screens smaller than 768px */
 @media (max-width: 768px) {
-    .home-container {
-        margin-top: 40px;
-        padding: 15px;
-    }
-
-    .section {
-        padding: 15px;
-    }
-
-    .quick-add-button {
-        padding: 10px 15px;
-        font-size: 0.9em;
+    .mobile-nav-footer {
+        display: flex;
     }
     
-    .search-bar {
-        flex-direction: column;
-        align-items: center;
-        padding: 10px;
-    }
-
-    .left-section{
-        flex-direction: column;
-        width: 100%;
-        align-items: center;
-    }
-
-    .right-section {
+    .right-section, .left-section {
         display: none;
     }
-
-
-
-/* Mobile Footer Navigation */
+    
+/* Mobile Navigation Footer */
 .mobile-nav-footer {
     display: none;
     position: fixed;
@@ -358,6 +340,7 @@ body {
     justify-content: space-around;
     padding: 10px 0;
     border-top: 1px solid #333;
+    z-index: 1000;
 }
 
 .mobile-nav-footer .nav-icon {
@@ -369,31 +352,5 @@ body {
 .mobile-nav-footer .nav-icon.active {
     color: #f2ca31; /* Highlight active page icon */
 }
-
-    #searchInput,
-    #sortDropdown {
-        width: 90%;
-        margin: 10px 0;
-    }
-
-    .nav-button,
-    .logout-button {
-        width: 90%;
-        text-align: center;
-    }
-
-    
-/* Results Section */
-.results {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    padding-top: 150px;
-    justify-content: center;
 }
 
-.promotion-image {
-    max-width: 200px;
-    border-radius: 8px;
-}
-}

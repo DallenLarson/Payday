@@ -179,76 +179,6 @@ body {
     vertical-align: middle;
 }
 
-/* Mobile Layout */
-@media (max-width: 768px) {
-    .card-container {
-        display: block;
-        text-align: center;
-        padding: 10px;
-    }
-
-    /* Move the logo above the card */
-    .logo {
-        display: block;
-        margin: 0 auto 20px auto;
-    }
-
-    /* Center the card image */
-    .card-image img {
-        margin: 0 auto;
-        display: block;
-        width: 100%;
-        max-width: 300px;
-    }
-
-    /* Adjust card details to be below the image */
-    .card-details {
-        padding: 0;
-        margin-top: 20px;
-    }
-
-    
-    .right-section {
-        display: none;
-    }
-
-
-
-/* Mobile Footer Navigation */
-.mobile-nav-footer {
-    display: none;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #000000;
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    border-top: 1px solid #333;
-}
-
-.mobile-nav-footer .nav-icon {
-    color: #ffffff;
-    font-size: 1.5em;
-    text-align: center;
-}
-
-.mobile-nav-footer .nav-icon.active {
-    color: #f2ca31; /* Highlight active page icon */
-}
-
-    /* Adjust text alignment for card details */
-    .card-details h1,
-    .card-details h2,
-    .product-line,
-    .product-details,
-    .price-section,
-    .price-chart-container {
-        text-align: center;
-    }
-
-    
-}
 
 
 .nav-button {
@@ -285,4 +215,165 @@ body {
 .logout-button:hover {
     background-color: #c9302c;
     transform: scale(1.05);
+}
+
+
+.mobile-nav-footer {
+    display: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    /* Increase padding and margin for readability */
+    .portfolio-overview h1 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }   
+
+.right-section {
+    display: none;
+}
+
+    .portfolio-overview h2 {
+        font-size: 2em;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    
+.logo {
+    height: 0px; /* Adjust as needed */
+    width: auto;
+    margin-right: 15px; /* Space between logo and search input */
+    vertical-align: middle;
+}
+
+    #portfolioChange {
+        font-size: 0.9em;
+        margin-bottom: 15px;
+    }
+
+    .chart-container {
+        margin-top: 15px;
+        padding: 10px;
+    }
+
+    .date-range {
+        margin-top: 15px;
+        gap: 10px;
+    }
+
+    .date-button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+
+    
+
+    .promotion-image {
+        max-width: 90%;
+        max-height: 80vh;
+        border-radius: 8px;
+    }
+
+    .buying-power h3 {
+        font-size: 1em;
+    }
+
+    .buying-power p {
+        font-size: 1.5em;
+    }
+
+    /* Center and style the mobile footer */
+    .mobile-nav-footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #000000;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 15px 0;
+        border-top: 1px solid #333;
+        z-index: 1000;
+    }
+
+    /* Style for all icons in the footer */
+    .mobile-nav-footer .nav-icon {
+        color: #ffffff; /* Default color for all icons */
+        font-size: 1.8em;
+        text-align: center;
+        transition: color 0.3s ease;
+    }
+
+    
+    .card-container {
+        display: block;
+        text-align: center;
+        padding: 10px;
+    }
+
+    /* Move the logo above the card */
+    .logo {
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+
+    /* Center the card image */
+    .card-image img {
+        margin: 0 auto;
+        display: block;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    /* Adjust card details to be below the image */
+    .card-details {
+        padding: 0;
+        margin-top: 20px;
+    }
+
+    
+
+    /* Adjust text alignment for card details */
+    .card-details h1,
+    .card-details h2,
+    .product-line,
+    .product-details,
+    .price-section,
+    .price-chart-container {
+        text-align: center;
+    }
+
+    
+
+    /* Highlight the active (home) icon */
+    .mobile-nav-footer .nav-icon#search-icon {
+        color: #f2ca31; /* Specific color for home icon when active */
+    }
+
+    .mobile-nav-footer .nav-icon:hover {
+        color: #f2ca31; /* Change color on hover for a subtle effect */
+    }
+
+    /* Adjust padding for footer to make it more spacious */
+    footer.mobile-nav-footer {
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
+    /* Adjust overall container spacing */
+    .portfolio-overview,
+    .buying-power,
+    .card-of-the-day-container {
+        margin-top: 15px;
+        padding: 15px;
+    }
+
+    .section p {
+        font-size: 1em;
+        line-height: 1.5;
+        margin-top: 10px;
+        padding: 0 5px;
+    }
 }

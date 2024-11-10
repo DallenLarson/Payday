@@ -490,6 +490,11 @@ body {
     text-decoration: underline;
 }
 
+
+.mobile-nav-footer {
+    display: none;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     /* Increase padding and margin for readability */
