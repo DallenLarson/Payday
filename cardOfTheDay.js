@@ -50,7 +50,6 @@ async function displayCardOfTheDay() {
     if (cards.length === 0) return;
 
     const card = selectDailyCard(cards);
-    document.getElementById("cardName").textContent = card.name;
     document.getElementById("cardContainerLink").href = `card.html?id=${card.id}`;
     document.getElementById("backgroundImage").src = card.images.large; // Set the background image
 }

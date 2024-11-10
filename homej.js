@@ -97,19 +97,18 @@ async function updatePortfolioSummary() {
 
 onAuthStateChanged(auth, async (user) => {
     if (user) {
-        logoutButton.style.display = 'inline-block';
         await loadPortfolioData(user.uid);
         updatePortfolioSummary();
     } else {
         window.location.href = "login.html";
     }
 });
-
+/*
 logoutButton.addEventListener('click', async () => {
     await firebaseSignOut(auth);
     window.location.href = "login.html";
 });
-
+*/
 async function loadPortfolioData(userId) {
     try {
         const portfolioRef = doc(db, "portfolios", userId);

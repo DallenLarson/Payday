@@ -1,6 +1,6 @@
 /* General Body Styles */
 body {
-    background-color: #1a1a1a;
+    background-color: #000000;
     color: #ffffff;
     font-family: Arial, sans-serif;
     margin: 0;
@@ -12,7 +12,19 @@ body {
     display: flex;
     justify-content: space-between; /* Aligns sections to far left and right */
     padding: 15px 30px;
-    background-color: #121212;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 20px;
+    align-items: center;
+}
+
+.search-bar-search {
+    display: flex;
+    justify-content: space-between; /* Aligns sections to far left and right */
+    padding: 15px 30px;
+    background-color: #000000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: fixed;
     top: 0;
@@ -20,7 +32,7 @@ body {
     z-index: 1000;
     padding: 20px;
     align-items: center;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid rgb(15, 15, 15);
 }
 
 /* Left section styling */
@@ -104,7 +116,7 @@ body {
 
 /* Navigation button styling */
 .nav-button {
-    background-color: #0073e6;
+    background-color: #0073e600;
     color: #ffffff;
     padding: 8px 12px;
     font-size: 0.9em;
@@ -116,8 +128,9 @@ body {
 }
 
 .nav-button:hover {
-    background-color: #005bb5;
+    background-color: #005bb500;
     transform: scale(1.05);
+    color: #f2ca31;
 }
 
 /* Red Logout button styling */
@@ -228,49 +241,6 @@ body {
     background-color: #218838;
 }
 
-/* Media query for mobile */
-@media (max-width: 768px) {
-    .search-bar {
-        flex-direction: column;
-        align-items: center;
-        padding: 10px;
-    }
-
-    .left-section,
-    .right-section {
-        flex-direction: column;
-        width: 100%;
-        align-items: center;
-    }
-
-    #searchInput,
-    #sortDropdown {
-        width: 90%;
-        margin: 10px 0;
-    }
-
-    .nav-button,
-    .logout-button {
-        width: 90%;
-        text-align: center;
-    }
-
-    
-/* Results Section */
-.results {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    padding-top: 150px;
-    justify-content: center;
-}
-
-.promotion-image {
-    max-width: 200px;
-    border-radius: 8px;
-}
-}
-
 /* Home Container Styling */
 .home-container {
     max-width: 800px;
@@ -374,26 +344,19 @@ body {
     font-weight: bold;
 }
 
+/* Force left alignment specifically for h1 and h2 inside .portfolio-overview */
+.portfolio-overview h1, .portfolio-overview h2 {
+    text-align: left;
+}
+
+#portfolioChange {
+    text-align: left;
+}
+
+
 .section p {
     font-size: 1.1em;
     line-height: 1.6;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .home-container {
-        margin-top: 40px;
-        padding: 15px;
-    }
-
-    .section {
-        padding: 15px;
-    }
-
-    .quick-add-button {
-        padding: 10px 15px;
-        font-size: 0.9em;
-    }
 }
 
 /* Portfolio Overview Styling */
@@ -515,14 +478,6 @@ body {
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 16px rgba(255, 255, 255, 0.6); /* Glow effect */
 }
 
-/* Card Name Styling with Glow */
-#cardName {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #ffffff;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 16px rgba(255, 255, 255, 0.6); /* Glow effect */
-}
-
 /* Link Styling with Glow */
 .view-details {
     color: #1e88e5;
@@ -533,4 +488,106 @@ body {
 
 .view-details:hover {
     text-decoration: underline;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    /* Increase padding and margin for readability */
+    .portfolio-overview h1 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }   
+
+.right-section {
+    display: none;
+}
+
+.left-section {
+    display: none;
+}
+    .portfolio-overview h2 {
+        font-size: 2em;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    #portfolioChange {
+        font-size: 0.9em;
+        margin-bottom: 15px;
+    }
+
+    .chart-container {
+        margin-top: 15px;
+        padding: 10px;
+    }
+
+    .date-range {
+        margin-top: 15px;
+        gap: 10px;
+    }
+
+    .date-button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+
+    .buying-power h3 {
+        font-size: 1em;
+    }
+
+    .buying-power p {
+        font-size: 1.5em;
+    }
+
+    /* Center and style the mobile footer */
+    .mobile-nav-footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #000000;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 15px 0;
+        border-top: 1px solid #333;
+        z-index: 1000;
+    }
+
+    /* Style for all icons in the footer */
+    .mobile-nav-footer .nav-icon {
+        color: #ffffff; /* Default color for all icons */
+        font-size: 1.8em;
+        text-align: center;
+        transition: color 0.3s ease;
+    }
+
+    /* Highlight the active (home) icon */
+    .mobile-nav-footer .nav-icon#home-icon {
+        color: #f2ca31; /* Specific color for home icon when active */
+    }
+
+    .mobile-nav-footer .nav-icon:hover {
+        color: #f2ca31; /* Change color on hover for a subtle effect */
+    }
+
+    /* Adjust padding for footer to make it more spacious */
+    footer.mobile-nav-footer {
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
+    /* Adjust overall container spacing */
+    .portfolio-overview,
+    .buying-power,
+    .card-of-the-day-container {
+        margin-top: 15px;
+        padding: 15px;
+    }
+
+    .section p {
+        font-size: 1em;
+        line-height: 1.5;
+        margin-top: 10px;
+        padding: 0 5px;
+    }
 }

@@ -1,6 +1,6 @@
 /* Portfolio Container */
 body {
-    background-color: #1a1a1a;
+    background-color: #000000;
     color: #ffffff;
     font-family: Arial, sans-serif;
     margin: 0;
@@ -8,12 +8,15 @@ body {
 }
 
 .portfolio-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #121212;
-    border-bottom: 1px solid #333;
+        display: flex;
+        justify-content: space-between; /* Aligns sections to far left and right */
+        padding: 15px 30px;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        padding: 20px;
+        align-items: center;
 }
 
 .portfolio-header h1 {
@@ -31,18 +34,42 @@ body {
     border-radius: 4px;
 }
 
+.search-bar {
+    display: flex;
+    justify-content: space-between; /* Aligns sections to far left and right */
+    padding: 15px 30px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 20px;
+    align-items: center;
+}
+
 .back-button:hover {
     background-color: #555;
 }
 
 /* Logo Styling */
 .logo {
-    height: 40px; /* Adjust as needed */
+    height: 60px; /* Adjust as needed for larger logo */
     width: auto;
-    margin-right: 15px; /* Space between logo and search input */
+    margin-right: 15px;
     vertical-align: middle;
 }
 
+.right-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-right: 70px;
+}
+
+.left-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
 .portfolio-container {
     padding: 20px;
@@ -190,7 +217,7 @@ body {
 
 
 .nav-button {
-    background-color: #0073e6;
+    background-color: #0073e600;
     color: #ffffff;
     padding: 8px 12px;
     font-size: 0.9em;
@@ -202,8 +229,9 @@ body {
 }
 
 .nav-button:hover {
-    background-color: #005bb5;
+    background-color: #005bb500;
     transform: scale(1.05);
+    color: #f2ca31;
 }
 
 /* Red Logout button styling */
@@ -283,4 +311,89 @@ body {
 
 .sort-dropdown:hover {
     background-color: #555;
+}
+
+
+@media (max-width: 768px) {
+    .home-container {
+        margin-top: 40px;
+        padding: 15px;
+    }
+
+    .section {
+        padding: 15px;
+    }
+
+    .quick-add-button {
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
+    
+    .search-bar {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .left-section{
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+
+    .right-section {
+        display: none;
+    }
+
+
+
+/* Mobile Footer Navigation */
+.mobile-nav-footer {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #000000;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 1px solid #333;
+}
+
+.mobile-nav-footer .nav-icon {
+    color: #ffffff;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.mobile-nav-footer .nav-icon.active {
+    color: #f2ca31; /* Highlight active page icon */
+}
+
+    #searchInput,
+    #sortDropdown {
+        width: 90%;
+        margin: 10px 0;
+    }
+
+    .nav-button,
+    .logout-button {
+        width: 90%;
+        text-align: center;
+    }
+
+    
+/* Results Section */
+.results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding-top: 150px;
+    justify-content: center;
+}
+
+.promotion-image {
+    max-width: 200px;
+    border-radius: 8px;
+}
 }

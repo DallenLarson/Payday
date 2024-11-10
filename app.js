@@ -41,19 +41,18 @@ function hideLoading() {
 onAuthStateChanged(auth, (user) => {
     if (user) {
         // User is signed in, display the logout button
-        logoutButton.style.display = 'inline-block';
     } else {
         // No user is signed in, redirect to login page
         window.location.href = "login.html";
     }
 });
-
+/*
 // Handle logout
 logoutButton.addEventListener('click', async () => {
     await firebaseSignOut(auth);
     window.location.href = "login.html"; // Redirect to login after logging out
 });
-
+*/
 // Event listener for search input
 searchInput.addEventListener('input', async (event) => {
     const query = event.target.value.trim();
@@ -128,20 +127,28 @@ async function addToPortfolio(card) {
   }
   
 
-async function addCardToPortfolio(card) {
+  async function addCardToPortfolio(card) {
     const user = auth.currentUser;
-    if (!user){
-        
-      console.error("Error adding card to portfolio: Can't find user!");
-      return;
-    };
-  
+    if (!user) {
+        console.error("Error adding card to portfolio: Can't find user!");
+        return;
+    }
+
     const portfolioRef = doc(db, "portfolios", user.uid);
+
+    // Check if the portfolio document exists, create if it doesn’t
+    const portfolioDoc = await getDoc(portfolioRef);
+    if (!portfolioDoc.exists()) {
+        await setDoc(portfolioRef, { cards: [] });
+        console.log("Created new portfolio document for user:", user.uid);
+    }
+
+    // Now proceed with adding the card to the portfolio
     await updateDoc(portfolioRef, {
-      cards: arrayUnion(card)
+        cards: arrayUnion(card)
     });
     console.log("Card added to portfolio in Firestore:", card);
-  }
+}
   
 
 

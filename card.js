@@ -5,6 +5,7 @@ import { doc, setDoc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.
 const apiKey = '7e56dabe-1394-4d6e-aa3b-f7250070b899';
 const urlParams = new URLSearchParams(window.location.search);
 const cardId = urlParams.get('id');
+
 // Fetch and display card details
 async function fetchCardDetails() {
     try {
@@ -33,7 +34,7 @@ async function fetchCardDetails() {
         document.title = `${card.name} (${card.number}/${card.set.total}) - ${card.set.name} | Payday`;
 
         updateMetaTags(card);
-        renderPriceChart();
+        renderPriceChart(card);
 
         // Define addButton and attach the click event to add the card to portfolio
         const addButton = document.getElementById('addButton');
@@ -52,15 +53,22 @@ function updateMetaTags(card) {
 }
 
 // Render Price Chart
-function renderPriceChart() {
+function renderPriceChart(card) {
+    // Extract prices or set default values if not available
+    const prices = card.cardmarket ? card.cardmarket.prices : {};
+    const todayPrice = prices.averageSellPrice || 0;
+    const yesterdayPrice = prices.avg1 || todayPrice;
+    const oneWeekAgoPrice = prices.avg7 || yesterdayPrice;
+    const oneMonthAgoPrice = prices.avg30 || oneWeekAgoPrice;
+
     const ctx = document.getElementById('priceChart').getContext('2d');
     new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['Month 1', 'Month 2', 'Month 3'],
+            labels: ['1 Month Ago', '1 Week Ago', 'Yesterday', 'Today'],
             datasets: [{
                 label: 'Price in USD',
-                data: [20, 25, 23], // Replace with actual price data if available
+                data: [oneMonthAgoPrice, oneWeekAgoPrice, yesterdayPrice, todayPrice],
                 borderColor: '#0073e6',
                 backgroundColor: 'rgba(0, 115, 230, 0.2)',
                 fill: true,
@@ -90,32 +98,36 @@ function renderPriceChart() {
 // Add full card details to portfolio
 async function addToPortfolio(card) {
     try {
-      await addCardToPortfolio(card);
-      alert(`${card.name} has been added to your portfolio!`);
+        await addCardToPortfolio(card);
+        alert(`${card.name} has been added to your portfolio!`);
     } catch (error) {
-      console.error("Error adding card to portfolio:", error);
-      alert("Failed to add card to portfolio.");
+        console.error("Error adding card to portfolio:", error);
+        alert("Failed to add card to portfolio.");
     }
-  }
-  
+}
 
 async function addCardToPortfolio(card) {
     const user = auth.currentUser;
-    if (!user){
-        
+    if (!user) {
         console.error("Error adding card to portfolio: Can't find user!");
         return;
-      };
-  
+    }
+
     const portfolioRef = doc(db, "portfolios", user.uid);
+
+    // Check if the portfolio document exists, create if it doesn’t
+    const portfolioDoc = await getDoc(portfolioRef);
+    if (!portfolioDoc.exists()) {
+        await setDoc(portfolioRef, { cards: [] });
+        console.log("Created new portfolio document for user:", user.uid);
+    }
+
+    // Now proceed with adding the card to the portfolio
     await updateDoc(portfolioRef, {
-      cards: arrayUnion(card)
+        cards: arrayUnion(card)
     });
     console.log("Card added to portfolio in Firestore:", card);
-  }
-  
-
-
+}
 
 // Go back to the main search page
 function goToIndex() {
@@ -126,6 +138,29 @@ function goToPortfolio() {
     window.location.href = 'portfolio.html';
 }
 
-// Fetch the card details when the page loads
+// Add 3D tilt effect on mouse move
+const cardImageContainer = document.querySelector('.card-image');
+const cardImage = document.getElementById('cardImage');
 
+cardImageContainer.addEventListener('mousemove', (event) => {
+    // Get the position of the mouse relative to the card image
+    const rect = cardImageContainer.getBoundingClientRect();
+    const x = event.clientX - rect.left; // X position within the card image
+    const y = event.clientY - rect.top;  // Y position within the card image
+
+    // Calculate rotation values based on mouse position
+    const rotateY = ((x / rect.width) - 0.5) * 30; // Adjust for sensitivity
+    const rotateX = ((y / rect.height) - 0.5) * -30; // Adjust for sensitivity
+
+    // Apply the rotation
+    cardImage.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+});
+
+// Reset rotation when the mouse leaves the image area
+cardImageContainer.addEventListener('mouseleave', () => {
+    cardImage.style.transform = 'rotateY(0deg) rotateX(0deg)';
+});
+
+
+// Fetch the card details when the page loads
 fetchCardDetails();
