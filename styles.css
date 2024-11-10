@@ -18,6 +18,9 @@ body {
     top: 0;
     width: 100%;
     z-index: 1000;
+    padding: 20px;
+    align-items: center;
+    border-bottom: 1px solid #333;
 }
 
 /* Left section styling */
@@ -28,8 +31,10 @@ body {
 }
 
 .logo {
-    height: 40px;
-    margin-right: 10px;
+    height: 40px; /* Adjust as needed */
+    width: auto;
+    margin-right: 15px; /* Space between logo and search input */
+    vertical-align: middle;
 }
 
 #searchInput {

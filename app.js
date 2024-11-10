@@ -1,5 +1,7 @@
 import { auth } from "./firebaseConfig.js";
 import { onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
+import { db } from "./firebaseConfig.js";
+import { doc, setDoc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
 const apiKey = '7e56dabe-1394-4d6e-aa3b-f7250070b899';
 const searchInput = document.getElementById('searchInput');
@@ -115,16 +117,33 @@ function sortCards(cards) {
 }
 
 // Function to add card to portfolio
-function addToPortfolio(card) {
-    let portfolio = JSON.parse(localStorage.getItem('portfolio')) || [];
-    portfolio.push({
-        id: card.id,
-        name: card.name,
-        price: card.cardmarket?.prices.averageSellPrice || 0
+async function addToPortfolio(card) {
+    try {
+      await addCardToPortfolio(card);
+      alert(`${card.name} has been added to your portfolio!`);
+    } catch (error) {
+      console.error("Error adding card to portfolio:", error);
+      alert("Failed to add card to portfolio.");
+    }
+  }
+  
+
+async function addCardToPortfolio(card) {
+    const user = auth.currentUser;
+    if (!user){
+        
+      console.error("Error adding card to portfolio: Can't find user!");
+      return;
+    };
+  
+    const portfolioRef = doc(db, "portfolios", user.uid);
+    await updateDoc(portfolioRef, {
+      cards: arrayUnion(card)
     });
-    localStorage.setItem('portfolio', JSON.stringify(portfolio));
-    alert(`${card.name} has been added to your portfolio!`);
-}
+    console.log("Card added to portfolio in Firestore:", card);
+  }
+  
+
 
 // Display results in the DOM with a Quick Add button
 function displayResults(cards) {

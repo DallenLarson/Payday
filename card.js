@@ -1,9 +1,11 @@
 const apiKey = '7e56dabe-1394-4d6e-aa3b-f7250070b899';
 const urlParams = new URLSearchParams(window.location.search);
 const cardId = urlParams.get('id');
+import { auth } from "./firebaseConfig.js";
+import { db } from "./firebaseConfig.js";
+import { doc, setDoc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
-// Function to fetch and display the card details
-// Function to fetch and display the card details
+// Fetch and display card details
 async function fetchCardDetails() {
     try {
         const response = await fetch(`https://api.pokemontcg.io/v2/cards/${cardId}`, {
@@ -15,7 +17,7 @@ async function fetchCardDetails() {
         const data = await response.json();
         const card = data.data;
 
-        // Populate the HTML elements with card details
+        // Populate HTML elements
         document.getElementById('cardName').textContent = card.name;
         document.getElementById('cardImage').src = card.images.large;
         document.getElementById('cardSet').textContent = `Set: ${card.set.name}`;
@@ -28,40 +30,37 @@ async function fetchCardDetails() {
             ? `Price: $${card.cardmarket.prices.averageSellPrice.toFixed(2)}`
             : 'Price: N/A';
 
-        // Set the page title dynamically
         document.title = `${card.name} (${card.number}/${card.set.total}) - ${card.set.name} | Payday`;
 
-        // Mocked price data for demonstration (replace with actual data if available)
-        const priceData = {
-            labels: ['Month 1', 'Month 2', 'Month 3'], // Replace with actual months if available
-            prices: [20, 25, 23] // Replace with actual price data
-        };
-
-        // Render the price chart
-
         updateMetaTags(card);
-        renderPriceChart(priceData);
+        renderPriceChart();
+
+        // Define addButton and attach the click event to add the card to portfolio
+        const addButton = document.getElementById('addButton');
+        addButton.onclick = () => addToPortfolio(card);
+
     } catch (error) {
         console.error('Error fetching card details:', error);
     }
 }
 
+// Update Meta Tags
 function updateMetaTags(card) {
     document.querySelector('meta[property="og:title"]').setAttribute("content", `Check ${card.name} out on Payday!`);
     document.querySelector('meta[property="og:image"]').setAttribute("content", card.images.large);
-    document.title = `${card.name} | Payday`; // Update the page title
+    document.title = `${card.name} | Payday`;
 }
 
-// Function to render the price chart using Chart.js
-function renderPriceChart(priceData) {
+// Render Price Chart
+function renderPriceChart() {
     const ctx = document.getElementById('priceChart').getContext('2d');
     new Chart(ctx, {
         type: 'line',
         data: {
-            labels: priceData.labels,
+            labels: ['Month 1', 'Month 2', 'Month 3'],
             datasets: [{
                 label: 'Price in USD',
-                data: priceData.prices,
+                data: [20, 25, 23], // Replace with actual price data if available
                 borderColor: '#0073e6',
                 backgroundColor: 'rgba(0, 115, 230, 0.2)',
                 fill: true,
@@ -88,30 +87,39 @@ function renderPriceChart(priceData) {
     });
 }
 
-function addToPortfolio() {
-    const cardName = document.getElementById('cardName').textContent;
-    const cardPriceText = document.getElementById('cardPrice').textContent;
-    const cardPrice = parseFloat(cardPriceText.replace('Price: $', ''));
+// Add full card details to portfolio
+async function addToPortfolio(card) {
+    try {
+      await addCardToPortfolio(card);
+      alert(`${card.name} has been added to your portfolio!`);
+    } catch (error) {
+      console.error("Error adding card to portfolio:", error);
+      alert("Failed to add card to portfolio.");
+    }
+  }
+  
 
-    // Get existing portfolio from local storage or create a new one
-    let portfolio = JSON.parse(localStorage.getItem('portfolio')) || [];
-
-    // Add the card to the portfolio
-    portfolio.push({
-        name: cardName,
-        price: cardPrice,
-        id: cardId
+async function addCardToPortfolio(card) {
+    const user = auth.currentUser;
+    if (!user){
+        
+        console.error("Error adding card to portfolio: Can't find user!");
+        return;
+      };
+  
+    const portfolioRef = doc(db, "portfolios", user.uid);
+    await updateDoc(portfolioRef, {
+      cards: arrayUnion(card)
     });
+    console.log("Card added to portfolio in Firestore:", card);
+  }
+  
 
-    // Save the updated portfolio back to local storage
-    localStorage.setItem('portfolio', JSON.stringify(portfolio));
 
-    alert(`${cardName} has been added to your portfolio!`);
-}
 
 // Go back to the main search page
 function goToIndex() {
-    window.location.href = 'index.html';
+    window.history.back();
 }
 
 function goToPortfolio() {
@@ -119,4 +127,5 @@ function goToPortfolio() {
 }
 
 // Fetch the card details when the page loads
+
 fetchCardDetails();

@@ -6,11 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <!-- Open Graph Meta Tags for Preview -->
-        <meta property="og:title" content="Loading... | Payday">
+        <meta property="og:title" content="Card Details | Payday">
         <meta property="og:description" content="Check out the details for this Pokémon card on Payday!">
         <meta property="og:image" content="logo.png">
         <meta property="og:type" content="website">
-        <meta property="og:url" content="http://localhost:8080/card.html">
         
         <title>Loading... | Payday</title>
         <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -43,7 +42,8 @@
 
             <div class="price-section">
                 <h3 id="cardPrice">Price: Loading...</h3>
-                <button class="buy-button" onclick="addToPortfolio()">Add to Portfolio</button>
+                <button class="buy-button" id="addButton">Add to Portfolio</button>
+                
             </div>
 
             <div class="price-chart-container">
@@ -52,6 +52,6 @@
             </div>
         </div>
     </div>
-    <script src="card.js"></script>
+    <script type="module" src="card.js"></script>
 </body>
 </html>

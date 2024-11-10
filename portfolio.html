@@ -8,24 +8,55 @@
     <link rel="stylesheet" href="portfolio.css">
 </head>
 <body>
+    <!-- Header Section -->
     <header class="portfolio-header">
         <a href="index.html">
-            <img src="logo.png" alt="Pokémon Card Search Logo" class="logo">
+            <img src="logo.png" alt="Payday Logo" class="logo">
         </a>
-        <button class="back-button" onclick="goToIndex()">← Back to Search</button>
+        <div class="right-section">
+            <a href="index.html" class="nav-button">Home</a>
+            <a href="search.html" class="nav-button">Search</a>
+            <a href="scanner.html" class="nav-button">Scanner</a>
+            <a href="portfolio.html" class="nav-button">Portfolio</a>
+            <button id="logoutButton" class="logout-button" style="display: none;">Log Out</button>
+        </div>
     </header>
 
-    <div id="portfolioContainer" class="portfolio-container">
-        <!-- Total Collection Value Section -->
-        <section class="total-value-section">
-            <h2>Total Collection Value</h2>
-            <p id="totalValue" class="total-value">Loading...</p>
+    <div id="profileContainer" class="portfolio-container">
+        <!-- Profile Overview Section -->
+        <section class="profile-overview-section total-value-section">
+            <h2>Your Profile</h2>
+            <div class="profile-stats">
+                <p><strong>Total Cards:</strong> <span id="totalCards">0</span></p>
+                <p><strong>Total Collection Value:</strong> <span id="totalValue">$0.00</span></p>
+                <p><strong>Favorite Card Type:</strong> <span id="favoriteType">Loading...</span></p>
+            </div>
         </section>
 
-        <!-- Card List Section -->
+        <!-- Profile Options -->
+        <section class="profile-options-section">
+            <div class="profile-option" onclick="editBackground()">
+                <h3>Edit Background</h3>
+                <p>Customize your profile background.</p>
+            </div>
+            <div class="profile-option" onclick="viewStats()">
+                <h3>Stats</h3>
+                <p>View in-depth statistics of your collection.</p>
+            </div>
+            <div class="profile-option" onclick="openSettings()">
+                <h3>Settings</h3>
+                <p>Manage account preferences and privacy settings.</p>
+            </div>
+            <div class="profile-option" onclick="contactSupport()">
+                <h3>Support</h3>
+                <p>Get help with any issues or questions you may have.</p>
+            </div>
+        </section>
+
+        <!-- Portfolio Section -->
         <section class="card-list-section">
             <div class="section-header">
-                <h2>Your Collection</h2>
+                <h2>Main Portfolio</h2>
                 <select id="sortOptions" class="sort-dropdown" onchange="sortPortfolio(event)">
                     <option value="set-name">Sort by Set Name</option>
                     <option value="alphabet">Sort by Alphabet</option>
@@ -38,7 +69,7 @@
             <div id="cardList" class="card-list"></div>
         </section>
     </div>
-    <script type="module" src="portfolio.js"></script>
 
+    <script type="module" src="portfolio.js"></script>
 </body>
 </html>
