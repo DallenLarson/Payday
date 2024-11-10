@@ -4,41 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | Payday</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Header with logo and navigation -->
     <header class="search-bar">
         <div class="left-section">
             <a href="index.html">
-                <img src="logo.png" alt="Pokémon Card Search Logo" class="logo">
+                <img src="logo.png" alt="Payday Logo" class="logo">
             </a>
-            <input type="text" id="searchInput" placeholder="Enter Pokémon card name...">
-            <select id="sortDropdown">
-                <option value="date-new">Release Date (Newest)</option>
-                <option value="date-old">Release Date (Oldest)</option>
-                <option value="price-high">Price (Highest)</option>
-                <option value="price-low">Price (Lowest)</option>
-                <option value="set-name">Set Name (A-Z)</option>
-            </select>
         </div>
-        
         <div class="right-section">
+            <a href="index.html" class="nav-button">Home</a>
+            <a href="search.html" class="nav-button">Search</a>
             <a href="scanner.html" class="nav-button">Scanner</a>
             <a href="portfolio.html" class="nav-button">Portfolio</a>
             <button id="logoutButton" class="logout-button" style="display: none;">Log Out</button>
         </div>
     </header>
 
-    <!-- Background and promotion container -->
-    <div id="promotionContainer" class="promotion-container">
-        <img src="sv-logo.png" alt="Surging Sparks - Out Now" class="promotion-image">
+    <div class="home-container">
+        <!-- Welcome Section -->
+        <div class="welcome-section section">
+            <h1>Welcome to Payday!</h1>
+            <p>Your all-in-one platform for tracking and scanning Pokémon cards with ease.</p>
+        </div>
+
+        <!-- About Section -->
+        <div class="about-section section">
+            <h2>What is Payday?</h2>
+            <p>Payday helps you manage and keep track of your Pokémon card collection, with tools to scan cards, add them to your portfolio, and view real-time values.</p>
+        </div>
+
+        <!-- Scan Section -->
+        <div class="scan-section section">
+            <h2>Start Scanning Now!</h2>
+            <button class="quick-add-button" onclick="window.location.href='scanner.html'">Scan Your Cards</button>
+        </div>
+
+        <!-- Portfolio Section -->
+        <div class="portfolio-section section">
+            <h2>Your Current Portfolio</h2>
+            <button class="quick-add-button" onclick="window.location.href='portfolio.html'">View Portfolio</button>
+        </div>
     </div>
 
-    <!-- Loading animation -->
-    <div id="loadingSpinner" class="loading-spinner" style="display: none;"></div>
+    <!-- Footer Section -->
+    <footer class="footer">
+        For more information, see our <a href="#">Disclosures</a> and <a href="#">Privacy Policy</a>.<br>
+        Options are risky and aren’t suitable for all investors. To learn more, read the <a href="#">Options Disclosure Document</a>.
+    </footer>
+    <script type="module" src="homej.js"></script>
+    <!-- Open Graph Meta Tags (for Discord, Facebook, etc.) -->
+    <meta property="og:title" content="💸 Payday 💸">
+    <meta property="og:description" content="Your all-in-one platform for tracking and scanning Pokémon cards with ease. Manage your collection, view real-time values, and more!">
+    <meta property="og:image" content="https://dallenlarson.github.io/Payday/embed.jpg"> <!-- Update with the actual URL to embed.jpg -->
+    <meta property="og:url" content="https://dallenlarson.github.io/Payday/"> <!-- Update with your actual site URL -->
+    <meta property="og:type" content="website">
 
-    <div id="resultsContainer" class="results"></div>
-    <script type="module" src="app.js"></script>
+    <!-- Twitter Card Meta Tags (for Twitter) -->
+    <meta name="twitter:title" content="💸 Payday 💸">
+    <meta name="twitter:description" content="Your all-in-one platform for tracking and scanning Pokémon cards with ease. Manage your collection, view real-time values, and more!">
+    <meta name="twitter:image" content="https://dallenlarson.github.io/Payday/embed.jpg"> <!-- Update with the actual URL to embed.jpg -->
+    <meta name="twitter:card" content="summary_large_image">
 </body>
 </html>

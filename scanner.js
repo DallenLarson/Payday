@@ -2,9 +2,29 @@ const video = document.getElementById('cameraStream');
 const scanButton = document.getElementById('scanButton');
 const scanStatus = document.getElementById('scanStatus');
 
-// Google Cloud Vision API key for authentication
-const googleVisionApiKey = 'AIzaSyC3Y9ursyrmj6IrLsAfv6nYV_uzCu-v53Y'; // Replace with your actual Vision API key
+// Replace with your actual Vision API key and TCG API key
+const googleVisionApiKey = 'AIzaSyC3Y9ursyrmj6IrLsAfv6nYV_uzCu-v53Y';
+const tcgApiKey = '7e56dabe-1394-4d6e-aa3b-f7250070b899';
 
+let validCardNames = new Set();
+
+// Load valid Pokémon card names from the TCG API
+async function loadValidCardNames() {
+    try {
+        const response = await fetch(`https://api.pokemontcg.io/v2/cards`, {
+            headers: {
+                'X-Api-Key': tcgApiKey,
+                'Accept': 'application/json',
+            }
+        });
+        const data = await response.json();
+        data.data.forEach(card => validCardNames.add(card.name.toLowerCase()));
+    } catch (error) {
+        console.error('Error fetching card names:', error);
+    }
+}
+
+// Start the camera
 async function startCamera() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -15,18 +35,16 @@ async function startCamera() {
     }
 }
 
+// Function to scan for a card
 async function scanForCard() {
     scanStatus.textContent = 'Scanning for card...';
-    // Capture a frame from the video feed
     const canvas = document.createElement('canvas');
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     const context = canvas.getContext('2d');
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    
+
     const imageDataUrl = canvas.toDataURL('image/png');
-    
-    // Send `imageDataUrl` to Google Vision API
     const foundCard = await analyzeImageWithVisionAPI(imageDataUrl);
 
     if (foundCard) {
@@ -37,7 +55,7 @@ async function scanForCard() {
     }
 }
 
-// Function to call Google Vision API
+// Function to analyze the image using Google Vision API
 async function analyzeImageWithVisionAPI(imageDataUrl) {
     const visionUrl = `https://vision.googleapis.com/v1/images:annotate?key=${googleVisionApiKey}`;
 
@@ -58,31 +76,33 @@ async function analyzeImageWithVisionAPI(imageDataUrl) {
         })
     });
 
-    const result = await response.json();
+    if (!response.ok) {
+        console.error('Vision API error:', response.statusText);
+        return null;
+    }
 
-    // Check for labels that match card names
+    const result = await response.json();
     const labels = result.responses[0]?.labelAnnotations || [];
+
+    // Match labels to valid Pokémon card names
     for (let label of labels) {
-        if (label.description) {
-            // Simulate finding a matching card based on label description
-            return { name: label.description, id: 'pgo-56' }; // Replace 'pgo-56' with real ID matching logic if possible
+        if (label.description && validCardNames.has(label.description.toLowerCase())) {
+            return { name: label.description, id: 'pgo-56' }; // Replace 'pgo-56' with actual card matching logic
         }
     }
-    return null; // No match found
+    return null;
 }
 
+// Function to add the card to the portfolio
 async function addToPortfolio(card) {
-    // Fetch the card details using its ID to get the price
     const cardDetails = await fetchCardDetails(card.id);
 
-    // If the card details are fetched successfully, add them to the portfolio
     if (cardDetails) {
         const cardToAdd = {
             ...card,
-            price: cardDetails.cardmarket?.prices.averageSellPrice || 0 // Use the fetched price or default to 0 if unavailable
+            price: cardDetails.cardmarket?.prices.averageSellPrice || 0
         };
 
-        // Retrieve existing portfolio from localStorage and add the new card
         let portfolio = JSON.parse(localStorage.getItem('portfolio')) || [];
         portfolio.push(cardToAdd);
         localStorage.setItem('portfolio', JSON.stringify(portfolio));
@@ -91,9 +111,8 @@ async function addToPortfolio(card) {
     }
 }
 
-// Function to fetch card details, including price, from the Pokémon TCG API
+// Fetch detailed card information
 async function fetchCardDetails(cardId) {
-    const tcgApiKey = '7e56dabe-1394-4d6e-aa3b-f7250070b899';
     try {
         const response = await fetch(`https://api.pokemontcg.io/v2/cards/${cardId}`, {
             headers: {
@@ -101,6 +120,10 @@ async function fetchCardDetails(cardId) {
                 'Accept': 'application/json',
             }
         });
+        if (!response.ok) {
+            console.error('Pokémon TCG API error:', response.statusText);
+            return null;
+        }
         const data = await response.json();
         return data.data;
     } catch (error) {
@@ -109,8 +132,12 @@ async function fetchCardDetails(cardId) {
     }
 }
 
-// Initialize camera on page load
-window.onload = startCamera;
+// Initialize camera and load card names
+window.onload = async () => {
+    await loadValidCardNames();
+    startCamera();
+};
+
 scanButton.onclick = scanForCard;
 
 function goToIndex() {

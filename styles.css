@@ -265,3 +265,128 @@ body {
     border-radius: 8px;
 }
 }
+
+/* Home Container Styling */
+.home-container {
+    max-width: 800px;
+    margin: 80px auto;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    text-align: center;
+}
+
+/* Section Styling */
+.section {
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 8px;
+    transition: transform 0.2s, background-color 0.3s;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Welcome Section */
+.welcome-section {
+    background-color: #4caf50;
+}
+
+.welcome-section:hover {
+    background-color: #66bb6a;
+    transform: scale(1.02);
+}
+
+/* About Section */
+.about-section {
+    background-color: #2196f3;
+}
+
+.about-section:hover {
+    background-color: #42a5f5;
+    transform: scale(1.02);
+}
+
+/* Scan Section */
+.scan-section {
+    background-color: #ff9800;
+}
+
+.scan-section:hover {
+    background-color: #ffb74d;
+    transform: scale(1.02);
+}
+
+/* Portfolio Section */
+.portfolio-section {
+    background-color: #0073e6;
+}
+
+.portfolio-section:hover {
+    background-color: #5a9bff;
+    transform: scale(1.02);
+}
+
+/* Action Buttons */
+.quick-add-button {
+    background-color: #ffffff;
+    color: #0073e6;
+    font-weight: bold;
+    padding: 12px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.quick-add-button:hover {
+    background-color: #005bb5;
+    color: #ffffff;
+}
+
+/* Footer Links */
+.footer a {
+    color: #00bcd4;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer a:hover {
+    color: #ff9800;
+    text-decoration: underline;
+}
+
+/* Section Titles */
+.section h1, .section h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.section p {
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .home-container {
+        margin-top: 40px;
+        padding: 15px;
+    }
+
+    .section {
+        padding: 15px;
+    }
+
+    .quick-add-button {
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
+}
