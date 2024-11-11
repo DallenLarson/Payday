@@ -1,13 +1,23 @@
 // Import Firebase methods
 import { auth, db } from "./firebaseConfig.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
-import { doc, setDoc, getDoc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
 // Load and display user information
-function displayUserInfo() {
+async function displayUserInfo() {
     const user = auth.currentUser;
     if (user) {
-        document.querySelector("#userEmail").textContent = user.email;
+        // Fetch user document from Firestore
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+            const username = userData.username || user.email.split("@")[0]; // Fallback to email prefix if username not found
+            document.querySelector("#userName").textContent = "@" + username;
+        } else {
+            console.log("No user document found.");
+        }
     }
 }
 
@@ -76,12 +86,64 @@ async function displayPortfolio(sortBy = 'alphabet') {
 
         cardContainer.appendChild(cardImage);
         cardList.appendChild(cardContainer);
+
+        // Attach click event to open overlay
+        cardContainer.addEventListener("click", () => openCardOverlay({
+            imageUrl: cardImage.src,
+            name: card.name,
+            set: card.set?.name || "Unknown Set",
+            value: cardPrice,
+            pokedexEntry: card.pokedexEntry || "Entry not available."
+        }));
     });
 
     totalCardsElement.textContent = combinedPortfolio.reduce((sum, card) => sum + card.quantity, 0);
     totalValueElement.textContent = `$${totalValue.toFixed(2)}`;
     const favoriteType = Object.entries(typeCounts).reduce((a, b) => (b[1] > a[1] ? b : a), [null, 0])[0];
     favoriteTypeElement.textContent = favoriteType || "N/A";
+}
+
+// Variables for overlay and card details
+const cardOverlay = document.getElementById("cardOverlay");
+const expandedCardImage = document.getElementById("expandedCardImage");
+const cardName = document.getElementById("cardName");
+const cardSet = document.getElementById("cardSet");
+const cardValue = document.getElementById("cardValue");
+const pokedexEntry = document.getElementById("pokedexEntry");
+
+
+window.auth = auth;
+
+// Function to open card overlay with details
+function openCardOverlay(card) {
+    console.log("Opening card overlay with card details:", card);
+
+    // Set the card details
+    expandedCardImage.src = card.imageUrl;
+    cardName.textContent = card.name;
+    cardSet.textContent = card.set;
+    cardValue.textContent = `$${card.value.toFixed(2)}`;
+    pokedexEntry.textContent = card.pokedexEntry;
+
+    // Apply smooth transition and show overlay
+    cardOverlay.classList.remove("hidden");
+    cardOverlay.style.opacity = "1";
+    console.log("Card overlay displayed");
+
+    // Close overlay on clicking outside the grey box
+    cardOverlay.addEventListener("click", closeCardOverlay);
+}
+
+// Function to close card overlay
+function closeCardOverlay(event) {
+    if (event.target === cardOverlay) {
+        console.log("Closing card overlay");
+
+        cardOverlay.style.opacity = "0";
+        setTimeout(() => {
+            cardOverlay.classList.add("hidden");
+        }, 300);
+    }
 }
 
 // Listen for authentication changes and load user information and portfolio if signed in

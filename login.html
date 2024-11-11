@@ -10,9 +10,12 @@
     <div class="login-container">
         <h2 id="formTitle">Log In</h2>
         <form id="authForm" class="login-form">
+            <label for="username" class="input-label" id="usernameLabel" style="display: none;">Username</label>
+            <input type="text" id="username" class="input-field" placeholder="Enter your username" style="display: none;" />
+
             <label for="email" class="input-label">Email</label>
             <input type="email" id="email" class="input-field" placeholder="Enter your email" required />
-            
+
             <label for="password" class="input-label">Password</label>
             <input type="password" id="password" class="input-field" placeholder="Enter your password" required />
 

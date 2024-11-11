@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Account | Payday</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="portfolio.css">
+    <link rel="stylesheet" href="account.css">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -23,7 +23,7 @@
         <!-- Profile Picture and Email Display -->
         <div class="profile-header">
             <img id="profilePic" alt="Profile Picture" />
-            <h3 id="userEmail">Loading...</h3>
+            <h3 id="userName">Loading...</h3>
         </div>
 
         <!-- Profile Overview Section -->
@@ -35,6 +35,23 @@
                 <p><strong>Favorite Card Type:</strong> <span id="favoriteType">Loading...</span></p>
             </div>
         </section>
+
+        <!-- Card Detail Overlay -->
+<div id="cardOverlay" class="card-overlay hidden">
+    <div class="card-detail-container">
+        <div class="card-image-container" id="cardImageContainer">
+            <img id="expandedCardImage" class="expanded-card-image" alt="Card Image" />
+        </div>
+        <div class="card-info-box">
+            <h2 id="cardName">Card Name</h2>
+            <p><strong>Set:</strong> <span id="cardSet">Set Name</span></p>
+            <p><strong>Value:</strong> <span id="cardValue">$0.00</span></p>
+            <p><strong>Pokédex Entry:</strong> <span id="pokedexEntry">Entry not available.</span></p>
+            <button id="removeCardButton" class="remove-button">Remove from Portfolio</button>
+        </div>
+    </div>
+</div>
+
 
         <!-- Portfolio Section -->
         <section class="card-list-section">
@@ -71,6 +88,8 @@
 
     <!-- Scripts -->
     <script type="module" src="account.js"></script>
+
+    <script type="module" src="usernameCreator.js"></script>
     <script type="module" src="profile.js"></script>
 </body>
 </html>
