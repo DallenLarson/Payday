@@ -288,7 +288,7 @@ postCommentButton.addEventListener("click", async () => {
     const commentData = {
         userId: user.uid,
         username: userData.username || user.email.split("@")[0],
-        profilePicture: userData.profilePic || 'placeholder.png', // Fetch profile pic or use default
+        profilePicture: userData.profilePic, // Fetch profile pic or use default
         text: commentContent,
         timestamp: Timestamp.now()
     };
