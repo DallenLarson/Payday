@@ -1,13 +1,19 @@
-import { auth } from "./firebaseConfig.js";
-import { db } from "./firebaseConfig.js";
-import { doc, setDoc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+import { auth, db } from "./firebaseConfig.js";
+import { setDoc, updateDoc, arrayUnion, doc, collection, addDoc, deleteDoc, query, orderBy, onSnapshot, Timestamp, getDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
 const apiKey = '7e56dabe-1394-4d6e-aa3b-f7250070b899';
 const urlParams = new URLSearchParams(window.location.search);
 const cardId = urlParams.get('id');
 
 // Fetch and display card details
+// Modify this part in fetchCardDetails
 async function fetchCardDetails() {
+    const cardContainer = document.getElementById('cardImage'); // Move this to the top
+    if (!cardContainer) {
+        console.error("Element with id 'card' not found.");
+        return;
+    }
+
     try {
         const response = await fetch(`https://api.pokemontcg.io/v2/cards/${cardId}`, {
             headers: {
@@ -17,6 +23,7 @@ async function fetchCardDetails() {
         });
         const data = await response.json();
         const card = data.data;
+        
 
         // Populate HTML elements
         document.getElementById('cardName').textContent = card.name;
@@ -31,12 +38,21 @@ async function fetchCardDetails() {
             ? `Price: $${card.cardmarket.prices.averageSellPrice.toFixed(2)}`
             : 'Price: N/A';
 
-        document.title = `${card.name} (${card.number}/${card.set.total}) - ${card.set.name} | Payday`;
+        // Set the data-rarity attribute for the shader
+        const rarityClass = getRarityClass(card.rarity);
+        cardContainer.setAttribute('data-rarity', rarityClass);
 
+        // Log the card name, rarity, and data-rarity attribute using getAttribute
+        console.log(`Card Name: ${card.name}`);
+        console.log(`Card Rarity: ${card.rarity}`);
+        console.log(`Data-Rarity Attribute: ${cardContainer.getAttribute('data-rarity')}`);
+
+        // Apply title and meta updates
+        document.title = `${card.name} (${card.number}/${card.set.total}) - ${card.set.name} | Payday`;
         updateMetaTags(card);
         renderPriceChart(card);
 
-        // Define addButton and attach the click event to add the card to portfolio
+        // Define addButton and attach click event
         const addButton = document.getElementById('addButton');
         addButton.onclick = () => addToPortfolio(card);
 
@@ -45,6 +61,32 @@ async function fetchCardDetails() {
     }
 }
 
+
+// Function to determine rarity class
+function getRarityClass(rarity) {
+    switch (rarity.toLowerCase()) {
+        case 'rare holo':
+            return 'rare holo';
+        case 'rare holo galaxy':
+            return 'rare holo galaxy';
+        case 'rare holo v':
+            return 'rare holo v';
+        case 'rare holo vmax':
+            return 'rare holo vmax';
+        case 'rare holo vstar':
+            return 'rare holo vstar';
+        case 'rare ultra':
+            return 'rare ultra';
+        case 'rare rainbow':
+            return 'rare rainbow';
+        case 'radiant':
+            return 'radiant';
+        default:
+            return 'normal';
+    }
+}
+
+
 // Update Meta Tags
 function updateMetaTags(card) {
     document.querySelector('meta[property="og:title"]').setAttribute("content", `Check ${card.name} out on Payday!`);
@@ -52,15 +94,33 @@ function updateMetaTags(card) {
     document.title = `${card.name} | Payday`;
 }
 
-// Render Price Chart
+// Render Price Chart with Price Difference Indicator
+// Render Price Chart with Price Difference Indicator
 function renderPriceChart(card) {
-    // Extract prices or set default values if not available
     const prices = card.cardmarket ? card.cardmarket.prices : {};
     const todayPrice = prices.averageSellPrice || 0;
-    const yesterdayPrice = prices.avg1 || todayPrice;
-    const oneWeekAgoPrice = prices.avg7 || yesterdayPrice;
-    const oneMonthAgoPrice = prices.avg30 || oneWeekAgoPrice;
+    const oneMonthAgoPrice = prices.avg30 || todayPrice;
 
+    // Calculate the price difference and percentage change
+    const priceDifference = todayPrice - oneMonthAgoPrice;
+    const percentageChange = ((priceDifference / oneMonthAgoPrice) * 100).toFixed(2);
+
+    // Format the price difference display
+    const priceIndicator = document.createElement("span");
+    priceIndicator.innerHTML = `${priceDifference >= 0 ? '▲' : '▼'} $${Math.abs(priceDifference).toFixed(2)} (${Math.abs(percentageChange)}%)`;
+    priceIndicator.style.color = priceDifference >= 0 ? 'green' : 'red';
+
+    // Insert the indicator below the "Last 30 Days" title
+    const priceChartContainer = document.querySelector('.price-chart-container');
+    const priceIndicatorContainer = document.createElement('div');
+    priceIndicatorContainer.style.textAlign = 'center';
+    priceIndicatorContainer.style.marginTop = '5px';
+    priceIndicatorContainer.appendChild(priceIndicator);
+
+    // Append the price indicator container to the chart container
+    priceChartContainer.appendChild(priceIndicatorContainer);
+
+    // Render the chart with conditional line color
     const ctx = document.getElementById('priceChart').getContext('2d');
     new Chart(ctx, {
         type: 'line',
@@ -68,9 +128,9 @@ function renderPriceChart(card) {
             labels: ['1 Month Ago', '1 Week Ago', 'Yesterday', 'Today'],
             datasets: [{
                 label: 'Price in USD',
-                data: [oneMonthAgoPrice, oneWeekAgoPrice, yesterdayPrice, todayPrice],
-                borderColor: '#0073e6',
-                backgroundColor: 'rgba(0, 115, 230, 0.2)',
+                data: [prices.avg30, prices.avg7, prices.avg1, todayPrice],
+                borderColor: priceDifference >= 0 ? 'green' : 'red',
+                backgroundColor: priceDifference >= 0 ? 'rgba(0, 255, 0, 0.2)' : 'rgba(255, 0, 0, 0.2)',
                 fill: true,
             }]
         },
@@ -94,6 +154,8 @@ function renderPriceChart(card) {
         }
     });
 }
+
+
 
 // Add full card details to portfolio
 async function addToPortfolio(card) {
@@ -164,3 +226,95 @@ cardImageContainer.addEventListener('mouseleave', () => {
 
 // Fetch the card details when the page loads
 fetchCardDetails();
+
+const commentsList = document.getElementById('comments-list');
+const postCommentButton = document.getElementById('postCommentButton');
+const commentText = document.getElementById('commentText');
+
+// Fetch and display comments in real-time
+function fetchComments() {
+    const commentsRef = collection(db, "cards", cardId, "comments");
+    const q = query(commentsRef, orderBy("timestamp", "desc"));
+    
+    onSnapshot(q, (snapshot) => {
+        commentsList.innerHTML = ""; // Clear comments list
+        snapshot.forEach((doc) => {
+            const comment = doc.data();
+            const isCurrentUser = auth.currentUser && auth.currentUser.uid === comment.userId;
+
+            const commentElement = document.createElement("div");
+            commentElement.className = "comment";
+            commentElement.innerHTML = `
+                <img src="${comment.profilePicture || 'default-profile.png'}" class="profile-picture" alt="Profile Picture">
+                <div class="comment-content">
+                    <p><strong>${comment.username}</strong> - ${comment.timestamp.toDate().toLocaleString()}</p>
+                    <p>${comment.text}</p>
+                </div>
+            `;
+
+            if (isCurrentUser) {
+                const deleteButton = document.createElement("button");
+                deleteButton.className = "delete-button";
+                deleteButton.textContent = "Delete";
+                deleteButton.onclick = () => deleteComment(doc.id);
+                commentElement.appendChild(deleteButton);
+            }
+
+            commentsList.appendChild(commentElement);
+        });
+    });
+}
+
+// Add new comment with profile picture and username
+postCommentButton.addEventListener("click", async () => {
+    const user = auth.currentUser;
+    if (!user) {
+        alert("Please log in to post a comment.");
+        return;
+    }
+
+    const commentContent = commentText.value.trim();
+    if (commentContent === "") {
+        alert("Comment cannot be empty.");
+        return;
+    }
+
+    // Fetch the user's username and profile picture from Firestore
+    const userDocRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userDocRef);
+    const userData = userDoc.exists() ? userDoc.data() : {};
+
+    const commentData = {
+        userId: user.uid,
+        username: userData.username || user.email.split("@")[0],
+        profilePicture: userData.profilePicture || 'default-profile.png',
+        text: commentContent,
+        timestamp: Timestamp.now()
+    };
+
+    try {
+        const commentsRef = collection(db, "cards", cardId, "comments");
+        await addDoc(commentsRef, commentData);
+        commentText.value = ""; // Clear the comment box
+    } catch (error) {
+        console.error("Error posting comment:", error);
+        alert("Failed to post comment.");
+    }
+});
+
+// Delete comment function
+async function deleteComment(commentId) {
+    if (confirm("Are you sure you want to delete this comment?")) {
+        try {
+            const commentRef = doc(db, "cards", cardId, "comments", commentId);
+            await deleteDoc(commentRef);
+            console.log("Comment deleted:", commentId);
+        } catch (error) {
+            console.error("Error deleting comment:", error);
+            alert("Failed to delete comment.");
+        }
+    }
+}
+
+// Initialize comments fetching
+fetchComments();

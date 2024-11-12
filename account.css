@@ -469,3 +469,15 @@ body {
 }
 }
 
+/* DEV Label Styling */
+.dev-label {
+    display: inline-block;
+    background-color: purple;
+    color: white;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-top: 5px;
+    font-size: 0.8em;
+    text-align: center;
+}

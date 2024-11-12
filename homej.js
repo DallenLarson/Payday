@@ -6,6 +6,8 @@ const logoutButton = document.getElementById('logoutButton');
 const portfolioValueElement = document.getElementById('portfolioValue');
 const portfolioChangeElement = document.getElementById('portfolioChange');
 
+const apiKey = '7e56dabe-1394-4d6e-aa3b-f7250070b899';
+
 // Portfolio data structure to store cumulative values by range
 let portfolioData = {
     "1D": { values: [], labels: [] },
@@ -273,3 +275,59 @@ window.updateChart = updateChart;
 window.onload = async () => {
     updateChart("1W");
 };
+async function fetchTopCards() {
+    try {
+        const response = await fetch(`https://api.pokemontcg.io/v2/cards?q=set.name:"Surging Sparks"`, {
+            headers: {
+                'X-Api-Key': apiKey,
+                'Accept': 'application/json',
+            }
+        });
+        const data = await response.json();
+
+        // Filter out cards without price data, then sort by highest price, and get top 10
+        const cards = data.data
+            .filter(card => card.cardmarket && card.cardmarket.prices && card.cardmarket.prices.averageSellPrice)
+            .sort((a, b) => b.cardmarket.prices.averageSellPrice - a.cardmarket.prices.averageSellPrice)
+            .slice(0, 8); // Get top 10
+
+        displayTopCards(cards);
+    } catch (error) {
+        console.error('Error fetching top cards:', error);
+    }
+}
+
+function displayTopCards(cards) {
+    const topCardsContainer = document.getElementById('topCardsContainer');
+    topCardsContainer.innerHTML = '';
+
+    cards.forEach(card => {
+        const todayPrice = card.cardmarket.prices.averageSellPrice || 0;
+        const yesterdayPrice = card.cardmarket.prices.avg1 || todayPrice; // Default to today if no data
+
+        // Calculate price change
+        const priceChange = todayPrice - yesterdayPrice;
+        const priceChangePercentage = ((priceChange / yesterdayPrice) * 100).toFixed(2);
+
+        // Create a link element to make the card clickable
+        const cardLink = document.createElement('a');
+        cardLink.href = `card.html?id=${card.id}`;
+        cardLink.className = 'top-card-entry';
+
+        cardLink.innerHTML = `
+            <img src="${card.images.small}" alt="${card.name}" class="top-card-image">
+            <div class="top-card-details">
+                <p><strong>${card.name}</strong></p>
+                <p>Price: $${todayPrice.toFixed(2)}</p>
+                <p class="${priceChange >= 0 ? 'green' : 'red'}">
+                    ${priceChange >= 0 ? '▲' : '▼'} $${Math.abs(priceChange).toFixed(2)} (${priceChangePercentage}%)
+                </p>
+            </div>
+        `;
+
+        topCardsContainer.appendChild(cardLink);
+    });
+}
+
+// Call the function to fetch and display the top 10 cards
+fetchTopCards();

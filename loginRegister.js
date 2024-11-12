@@ -1,6 +1,6 @@
 import { auth } from "./firebaseConfig.js";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
 // Firestore database
 const db = getFirestore();
@@ -38,14 +38,6 @@ toggleMessage.addEventListener("click", (event) => {
     errorMessage.textContent = "";
 });
 
-// Function to check if a username already exists in Firestore
-async function isUsernameTaken(username) {
-    const usersCollection = collection(db, "users");
-    const usernameQuery = query(usersCollection, where("username", "==", username));
-    const querySnapshot = await getDocs(usernameQuery);
-    return !querySnapshot.empty; // Returns true if username is taken
-}
-
 // Handle the form submission
 authForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -62,13 +54,6 @@ authForm.addEventListener("submit", async (event) => {
             const username = usernameField.value.trim();
             if (!username) {
                 errorMessage.textContent = "Please enter a username.";
-                errorMessage.style.display = "block";
-                return;
-            }
-
-            // Check if the username is already taken
-            if (await isUsernameTaken(username)) {
-                errorMessage.textContent = "Username is already taken. Please choose another.";
                 errorMessage.style.display = "block";
                 return;
             }

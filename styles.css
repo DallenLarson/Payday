@@ -127,6 +127,57 @@ body {
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
+.top-cards-section {
+    margin-top: 30px;
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#topCardsContainer {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto; /* Allow horizontal scrolling on smaller screens */
+}
+
+.top-card-entry {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #333;
+    border-radius: 8px;
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none; /* Remove underline from links */
+    color: inherit;
+}
+
+.top-card-entry:hover {
+    transform: scale(1.05); /* Slightly bigger on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.top-card-image {
+    width: 100px;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.green {
+    color: #00ff9d;
+}
+
+.red {
+    color: #ff4d4d;
+}
+
+
+
 .nav-button:hover {
     background-color: #005bb500;
     transform: scale(1.05);

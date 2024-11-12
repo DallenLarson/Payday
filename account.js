@@ -15,6 +15,16 @@ async function displayUserInfo() {
             const userData = userDoc.data();
             const username = userData.username || user.email.split("@")[0]; // Fallback to email prefix if username not found
             document.querySelector("#userName").textContent = "@" + username;
+
+            // Check if user is a developer
+            const isDev = userData.isDev || false;
+            if (isDev) {
+                // Create and display "DEV" label
+                const devLabel = document.createElement("span");
+                devLabel.className = "dev-label";
+                devLabel.textContent = "DEV";
+                document.querySelector("#profileContainer .profile-header").appendChild(devLabel);
+            }
         } else {
             console.log("No user document found.");
         }
