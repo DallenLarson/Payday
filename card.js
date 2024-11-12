@@ -245,7 +245,7 @@ function fetchComments() {
             const commentElement = document.createElement("div");
             commentElement.className = "comment";
             commentElement.innerHTML = `
-                <img src="${comment.profilePicture || 'default-profile.png'}" class="profile-picture" alt="Profile Picture">
+                <img src="${comment.profilePicture}" class="profile-picture" alt="Profile Picture">
                 <div class="comment-content">
                     <p><strong>${comment.username}</strong> - ${comment.timestamp.toDate().toLocaleString()}</p>
                     <p>${comment.text}</p>
@@ -264,6 +264,7 @@ function fetchComments() {
         });
     });
 }
+
 
 // Add new comment with profile picture and username
 postCommentButton.addEventListener("click", async () => {
@@ -287,7 +288,7 @@ postCommentButton.addEventListener("click", async () => {
     const commentData = {
         userId: user.uid,
         username: userData.username || user.email.split("@")[0],
-        profilePicture: userData.profilePicture || 'default-profile.png',
+        profilePicture: userData.profilePic || 'placeholder.png', // Fetch profile pic or use default
         text: commentContent,
         timestamp: Timestamp.now()
     };
@@ -301,6 +302,7 @@ postCommentButton.addEventListener("click", async () => {
         alert("Failed to post comment.");
     }
 });
+
 
 // Delete comment function
 async function deleteComment(commentId) {
