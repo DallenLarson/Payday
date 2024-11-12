@@ -1,0 +1,79 @@
+/* Basic styling for users.html */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin: 20px 0;
+    color: #333;
+}
+
+/* Container for the list of users */
+#usersList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1200px;
+    width: 100%;
+    justify-content: center;
+}
+
+/* Style for each user box */
+.user-item {
+    width: 180px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.2s ease-in-out;
+}
+
+.user-item:hover {
+    transform: scale(1.05);
+}
+
+/* Profile picture styling */
+.user-item img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+/* Username link styling */
+.user-item a {
+    display: block;
+    font-size: 18px;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.user-item a:hover {
+    color: #0073e6;
+}
+
+/* Developer tag styling */
+.dev-label {
+    background-color: #ff6347; /* Tomato color */
+    color: #ffffff;
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 5px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-weight: bold;
+}

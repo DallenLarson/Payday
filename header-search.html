@@ -8,6 +8,34 @@
         <a href="index.html" class="nav-button">Home</a>
         <a href="search.html" class="nav-button">Search</a>
         <a href="scanner.html" class="nav-button">Scanner</a>
-        <a href="portfolio.html" class="nav-button">Account</a>
+        <a id="accountLink" href="login.html" class="nav-button">Account</a>
     </div>
 </header>
+
+<script type="module">
+    import { auth } from './firebaseConfig.js';
+    import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js';
+
+    const accountLink = document.getElementById('accountLink');
+
+    // Check if Firebase auth is properly initialized
+    if (auth) {
+        console.log("Firebase Auth initialized.");
+
+        // Listen for changes in authentication state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("User is logged in:", user);
+                
+                // Use displayName if available, otherwise fallback to email prefix
+                const username = user.displayName || user.email.split('@')[0];
+                accountLink.href = `user-profile.html?username=${encodeURIComponent(username)}`;
+            } else {
+                console.log("No user is logged in. Redirecting to login.");
+                //accountLink.href = 'login.html';
+            }
+        });
+    } else {
+        console.error("Firebase Auth not initialized.");
+    }
+</script>
