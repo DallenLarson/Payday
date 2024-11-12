@@ -30,14 +30,13 @@
     </div>
 
     <div class="card-container">
-            <div class="card-image">
-                <img id="cardImage" alt="Card Image" data-rarity="rare holo vmax">
+        <div class="card-image">
+            <img id="cardImage" alt="Card Image" data-rarity="rare holo vmax">
         </div>
         <div class="card-details">
             <h1 id="cardName">Loading...</h1>
             <h2 id="cardSet">Set Name</h2>
             <p class="product-line">Product Details</p>
-
             <div class="product-details">
                 <p><strong>Rarity:</strong> <span id="cardRarity"></span></p>
                 <p><strong>Number:</strong> <span id="cardNumber"></span></p>
@@ -45,28 +44,33 @@
                 <p><strong>Card Subtype:</strong> <span id="cardClass"></span></p>
                 <p><strong>Element:</strong> <span id="cardElement"></span></p>
             </div>
-
             <div class="price-section">
                 <h3 id="cardPrice">Price: Loading...</h3>
                 <button class="buy-button" id="addButton">Add to Portfolio</button>
             </div>
-
             <div class="price-chart-container">
                 <h3>Price History (Last 30 Days)</h3>
                 <canvas id="priceChart"></canvas>
             </div>
+            <div class="comments-section">
+                <h3>Comments</h3>
+                <div class="comment-form">
+                    <textarea id="commentText" placeholder="Write a comment..."></textarea>
+                    <button id="postCommentButton">Post</button>
+                </div>
+                <div id="comments-list">
+                    <!-- Each comment is wrapped in a clickable div with a unique data-id -->
+                    <div class="comment" data-id="1">
+                        <p><strong>Username</strong> <span>(timestamp)</span></p>
+                        <p>This is a sample comment. Click to delete.</p>
+                    </div>
+                    <!-- More comments here -->
+                </div>
+            </div>            
         </div>
     </div>
-
-    <div class="comments-section">
-        <h3>Comments</h3>
-        <div id="comments-list">
-        </div>
-        <div class="comment-form">
-            <textarea id="commentText" placeholder="Write a comment..."></textarea>
-            <button id="postCommentButton">Post Comment</button>
-        </div>
-    </div>
+    
+    
     
     
 
@@ -81,7 +85,7 @@
     <a href="scanner.html" class="nav-icon" id="scanner-icon">
         <i class="fas fa-camera"></i>
     </a>
-    <a href="portfolio.html" class="nav-icon" id="account-icon">
+    <a href="user.html" class="nav-icon" id="account-icon">
         <i class="fas fa-user"></i>
     </a>
 </footer>

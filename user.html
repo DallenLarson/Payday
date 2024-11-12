@@ -17,16 +17,18 @@
             .catch(error => console.error('Error loading header:', error));
     </script>
 
-    <div id="profileContainer" class="portfolio-container">
-        <!-- Profile Picture and Username Display -->
-        <div class="profile-header">
-            <img id="profilePic" class="circular-profile-pic" alt="Profile Picture" />
+<div id="profileContainer" class="portfolio-container">
+    <!-- Profile Picture and Username Display -->
+    <div class="profile-header">
+        <img id="profilePic" class="circular-profile-pic" alt="Profile Picture" />
+        <div>
             <h3 id="userName">Loading...</h3>
-        </div>        
+        </div>
+    </div>     
 
         <!-- Profile Overview Section -->
         <section class="profile-overview-section">
-            <h2>Main Portfolio</h2>
+            <h2>Stats</h2>
             <div class="profile-stats">
                 <p><strong>Total Cards:</strong> <span id="totalCards">0</span></p>
                 <p><strong>Total Collection Value:</strong> <span id="totalValue">$0.00</span></p>

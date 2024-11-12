@@ -25,13 +25,53 @@
             </select>
         </div>
         
-        <div class="right-section">
-            <a href="index.html" class="nav-button">Home</a>
-            <a href="search.html" class="nav-button">Search</a>
-            <a href="scanner.html" class="nav-button">Scanner</a>
-            <a href="portfolio.html" class="nav-button">Account</a>
-        </div>
-    </header>
+    <div class="right-section">
+        <a href="index.html" class="nav-button">Home</a>
+        <a href="search.html" class="nav-button">Search</a>
+        <a href="scanner.html" class="nav-button">Scanner</a>
+        <a id="accountLink" href="user.html" class="nav-button">Account</a> <!-- Default to a general profile page -->
+    </div>
+</header>
+
+<script type="module">
+    import { auth, db } from "./firebaseConfig.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+
+    const accountLink = document.getElementById("accountLink");
+
+    // Function to set Account link to the user's profile
+    async function setAccountLink(user) {
+        if (user) {
+            console.log("User is logged in:", user); // Debugging: Log the user object
+
+            // Fetch user document from Firestore to get the username
+            const userDocRef = doc(db, "users", user.uid);
+            const userDoc = await getDoc(userDocRef);
+
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                const username = userData.username || user.email.split("@")[0];
+                
+                console.log("Setting Account link for user:", username); // Debugging
+
+                // Update the Account link to point to the user's profile
+                accountLink.href = `user.html?username=${encodeURIComponent(username)}`;
+            } else {
+                console.log("User document not found in Firestore."); // Debugging
+                // Fallback to a general profile page if user document doesn't exist
+                accountLink.href = "user.html";
+            }
+        }
+    }
+
+    // Listen for authentication changes and set the Account link based on the user state
+    onAuthStateChanged(auth, (user) => {
+        console.log("Auth state changed, user:", user); // Debugging
+        setAccountLink(user);
+    });
+</script>
+
 
     <!-- Background and promotion container -->
     <div id="promotionContainer" class="promotion-container">
