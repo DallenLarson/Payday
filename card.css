@@ -558,3 +558,84 @@ body {
 .delete-button:hover {
     background-color: #c21b4e;
 }
+
+.card-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.card-overlay.visible {
+    display: flex;
+}
+
+.card-detail-container {
+    display: flex; /* Aligns image and info box side by side */
+    max-width: 80%;
+    background-color: transparent;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.expanded-card-image {
+    width: 50%;
+    height: auto;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.card-info-box {
+    width: 50%; /* Adjust width as necessary */
+    padding: 20px;
+    background-color: #ffffff;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.card-info-box h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.card-info-box p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.close-button {
+    background-color: #333;
+    color: #ffffff;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+    align-self: flex-end; /* Align close button to the bottom right */
+}
+
+.remove-button {
+    background-color: #ff4d4f;
+    color: #ffffff;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+
+.remove-button:hover, .close-button:hover {
+    background-color: #d9363e;
+}

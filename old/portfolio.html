@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio | Payday</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="portfolio.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <div id="header-container"></div> <!-- Placeholder for the header -->
+    <script>
+        // Load header.html into the placeholder
+        fetch('header-search.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('header-container').innerHTML = data)
+            .catch(error => console.error('Error loading header:', error));
+    </script>
+
+    <div id="profileContainer" class="portfolio-container">
+        <!-- Profile Overview Section -->
+        <section class="profile-overview-section total-value-section">
+            <h2>Your Profile</h2>
+            <div class="profile-stats">
+                <p><strong>Total Cards:</strong> <span id="totalCards">0</span></p>
+                <p><strong>Total Collection Value:</strong> <span id="totalValue">$0.00</span></p>
+                <p><strong>Favorite Card Type:</strong> <span id="favoriteType">Loading...</span></p>
+            </div>
+        </section>
+
+        <!-- Profile Options -->
+        <section class="profile-options-section">
+            <div class="profile-option" onclick="editBackground()">
+                <h3>Edit Background</h3>
+                <p>Customize your profile background.</p>
+            </div>
+            <div class="profile-option" onclick="viewStats()">
+                <h3>Stats</h3>
+                <p>View in-depth statistics of your collection.</p>
+            </div>
+            <div class="profile-option" onclick="openSettings()">
+                <h3>Settings</h3>
+                <p>Manage account preferences and privacy settings.</p>
+            </div>
+            <div class="profile-option" onclick="contactSupport()">
+                <h3>Support</h3>
+                <p>Get help with any issues or questions you may have.</p>
+            </div>
+        </section>
+
+        <!-- Portfolio Section -->
+        <section class="card-list-section">
+            <div class="section-header">
+                <h2>Main Portfolio</h2>
+                <select id="sortOptions" class="sort-dropdown" onchange="sortPortfolio(event)">
+                    <option value="set-name">Sort by Set Name</option>
+                    <option value="alphabet">Sort by Alphabet</option>
+                    <option value="date-new">Newest First</option>
+                    <option value="date-old">Oldest First</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="price-low">Price: Low to High</option>
+                </select>
+            </div>
+            <div id="cardList" class="card-list"></div>
+        </section>
+    </div>
+
+    <!-- Mobile Navigation Footer -->
+<footer class="mobile-nav-footer">
+    <a href="index.html" class="nav-icon" id="home-icon">
+        <i class="fas fa-home"></i>
+    </a>
+    <a href="search.html" class="nav-icon" id="search-icon">
+        <i class="fas fa-search"></i>
+    </a>
+    <a href="scanner.html" class="nav-icon" id="scanner-icon">
+        <i class="fas fa-camera"></i>
+    </a>
+    <a href="portfolio.html" class="nav-icon" id="account-icon">
+        <i class="fas fa-user"></i>
+    </a>
+</footer>
+
+
+    <script type="module" src="portfolio.js"></script>
+</body>
+</html>

@@ -201,7 +201,7 @@ function goToPortfolio() {
 }
 
 // Add 3D tilt effect on mouse move
-const cardImageContainer = document.querySelector('.card-image');
+const cardImageContainer = document.querySelector('.card-image-single');
 const cardImage = document.getElementById('cardImage');
 
 cardImageContainer.addEventListener('mousemove', (event) => {

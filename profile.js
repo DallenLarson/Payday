@@ -7,7 +7,7 @@ import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.15.0/f
 const PROFILE_PIC_FOLDER = 'pfp/';
 
 // Dynamically generate profile picture filenames from avi1.png to avi25.png
-const profilePics = Array.from({ length: 35 }, (_, i) => `avi${i + 1}.png`);
+const profilePics = Array.from({ length: 40 }, (_, i) => `avi${i + 1}.png`);
 
 // Function to get or set a profile picture
 async function setProfilePicture(filename = null) {

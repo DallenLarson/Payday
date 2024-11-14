@@ -103,15 +103,21 @@ body {
 /* Card List Section */
 .card-list-section {
     background-color: #1f1f1f;
-    padding: 5px;
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+.card-list-section h2 {
+    font-size: 1.2em;
+    color: #aaaaaa;
+    margin-bottom: 10px;
+}
+
 .card-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
 }
 
 .card-entry {
@@ -119,38 +125,27 @@ body {
     flex-direction: column;
     align-items: center;
     background-color: #2a2a2a;
-    padding: 10px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-    transition: transform 0.2s, box-shadow 0.2s;
-    overflow: hidden;
-    cursor: pointer;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s;
+    width: 180px;
 }
 
 .card-entry:hover {
-    transform: scale(1.03);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
+    transform: scale(1.02);
 }
 
 .portfolio-card-image {
-    width: 100%;
-    color: rgba(0, 0, 0, 0);
-    height: 100%;
-    border-radius: 8px;
-    object-fit: cover;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    transition: box-shadow 0.2s;
+    width: 100px;
+    height: 140px;
+    border-radius: 4px;
+    margin-bottom: 10px;
 }
 
-.portfolio-card-image:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-}
-
-/* Card Details Styling */
 .card-details {
     text-align: center;
     width: 100%;
-    padding-top: 10px;
 }
 
 .card-name {
@@ -172,120 +167,13 @@ body {
     font-weight: bold;
 }
 
-/* Styles for the overlay effect */
-.card-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Dim the background */
-    display: none; /* Initially hidden */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+.card-quantity {
+    text-align: left;
 }
 
-.card-overlay.visible {
-    display: flex;
+.card-price {
+    text-align: right;
 }
-
-
-@keyframes zoomIn {
-    from {
-        transform: scale(0.7);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-
-.hidden {
-    display: none;
-}
-
-.card-detail-container {
-    width: 90%;
-    max-width: 600px;
-    background-color: #00000000;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-}
-
-.card-image-container {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    overflow: hidden;
-}
-
-.expanded-card-image {
-    width: 90%;
-    height: auto;
-    justify-content: center;
-    align-items: center;
-    object-fit: cover;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.card-info-box {
-    padding: 20px;
-    background-color: #e0e0e0;
-    border-top: 1px solid #d0d0d0;
-}
-
-.card-info-box h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.card-info-box p {
-    color: #555;
-    margin: 5px 0;
-}
-
-
-.card-info-box {
-    padding: 20px;
-    background-color: #e0e0e0;
-    border-top: 1px solid #d0d0d0;
-}
-
-.card-info-box h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.card-info-box p {
-    color: #555;
-    margin: 5px 0;
-}
-
-.remove-button, .close-button {
-    background-color: #ff4d4f;
-    color: #ffffff;
-    border: none;
-    padding: 8px 12px;
-    font-size: 0.9em;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-top: 10px;
-    transition: background-color 0.2s;
-    width: 100%;
-    text-align: center;
-}
-
-.remove-button:hover, .close-button:hover {
-    background-color: #d9363e;
-}
-
 
 
 .remove-button {
@@ -425,52 +313,19 @@ body {
     background-color: #555;
 }
 
-
-
-
-
-
-
-/* Profile Container */
-.profile-container {
-    max-width: 600px;
-    width: 100%;
-}
-
-.profile-header {
-    display: flex;
-    flex-direction: row; /* Align items horizontally */
-    align-items: center; /* Center vertically */
-    gap: 10px; /* Space between image and username */
-    text-align: left;
-    margin-top: 100px;
-    margin-bottom: 20px;
-}
-
 .circular-profile-pic {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     object-fit: cover;
 }
 
-
-#userName {
-    font-size: 1.5em;
-    margin: 0;
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
 }
-
-.user-tag {
-    color: #888;
-    font-size: 0.9em;
-    margin-top: 5px;
-}
-
-
-
-
-
-
 
 
 .mobile-nav-footer {
@@ -513,15 +368,3 @@ body {
 }
 }
 
-/* DEV Label Styling */
-.dev-label {
-    display: inline-block;
-    background-color: purple;
-    color: white;
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 4px;
-    margin-top: 5px;
-    font-size: 0.8em;
-    text-align: center;
-}

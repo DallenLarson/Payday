@@ -7,6 +7,11 @@ import { collection, query, where, getDocs, doc, getDoc, setDoc } from "https://
 const urlParams = new URLSearchParams(window.location.search);
 const username = urlParams.get("username");
 
+const cardOverlay = document.getElementById("cardOverlay");
+const cardDetailContainer = document.getElementById("cardDetailContainer");
+const expandedCardImage = document.getElementById("expandedCardImage");
+const cardList = document.getElementById("cardList"); // Parent container for cards
+
 async function displayUserProfile() {
     let userDocRef;
 
@@ -57,7 +62,6 @@ async function loadPortfolio(userId) {
     const portfolioRef = doc(db, "portfolios", userId);
     const portfolioDoc = await getDoc(portfolioRef);
 
-    const cardList = document.getElementById("cardList");
     const totalCardsElement = document.getElementById("totalCards");
     const totalValueElement = document.getElementById("totalValue");
     const favoriteTypeElement = document.getElementById("favoriteType");
@@ -84,20 +88,26 @@ async function loadPortfolio(userId) {
         const cardContainer = document.createElement("div");
         cardContainer.className = "card-entry";
         const cardImage = document.createElement("img");
-        cardImage.src = card.images?.small || "placeholder.png";
+        cardImage.src = card.images?.large || "placeholder.png"; // Use high-res image
         cardImage.alt = card.name;
         cardImage.className = "portfolio-card-image";
 
         cardContainer.appendChild(cardImage);
         cardList.appendChild(cardContainer);
 
-        cardContainer.addEventListener("click", () => openCardOverlay({
-            imageUrl: cardImage.src,
-            name: card.name,
-            set: card.set?.name || "Unknown Set",
-            value: card.cardmarket?.prices?.averageSellPrice || 0,
-            pokedexEntry: card.pokedexEntry || "Entry not available."
-        }));
+        // Add 3D tilt effect to each card image
+        cardImage.addEventListener('mousemove', (event) => {
+            const rect = cardImage.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            const rotateY = ((x / rect.width) - 0.5) * 30;
+            const rotateX = ((y / rect.height) - 0.5) * -30;
+            cardImage.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+        });
+
+        cardImage.addEventListener('mouseleave', () => {
+            cardImage.style.transform = 'rotateY(0deg) rotateX(0deg)';
+        });
     });
 
     totalCardsElement.textContent = portfolio.length;
@@ -106,33 +116,57 @@ async function loadPortfolio(userId) {
     favoriteTypeElement.textContent = favoriteType || "N/A";
 }
 
-// Card overlay functions
-function openCardOverlay(card) {
-    const cardOverlay = document.getElementById("cardOverlay");
-    document.getElementById("expandedCardImage").src = card.imageUrl;
-    document.getElementById("cardName").textContent = card.name;
-    document.getElementById("cardSet").textContent = card.set;
-    document.getElementById("cardValue").textContent = `$${card.value.toFixed(2)}`;
-    document.getElementById("pokedexEntry").textContent = card.pokedexEntry;
-
-    cardOverlay.classList.remove("hidden");
-    cardOverlay.style.opacity = "1";
-    cardOverlay.addEventListener("click", closeCardOverlay);
-}
-
-function closeCardOverlay(event) {
-    const cardOverlay = document.getElementById("cardOverlay");
-    if (event.target === cardOverlay) {
-        cardOverlay.style.opacity = "0";
-        setTimeout(() => cardOverlay.classList.add("hidden"), 300);
-    }
-}
-
 // Listen for authentication changes and load profile info
 onAuthStateChanged(auth, user => {
     if (user) {
         displayUserProfile();
     } else {
         console.log("No user is signed in.");
+    }
+});
+
+// Function to show the overlay with the clicked card's image
+function showCardOverlay(cardImageSrc) {
+    console.log("showCardOverlay called"); // Debug log
+    expandedCardImage.src = cardImageSrc;
+    cardOverlay.classList.add("visible");
+
+    // Example data; replace these with real values from your card object
+    document.getElementById('cardInfoName').textContent = "Sample Card Name";
+    document.getElementById('cardInfoSet').textContent = "Set: Sample Set";
+    document.getElementById('cardInfoPrice').textContent = "Price: $15.99";
+
+    // Add 3D tilt effect to the expanded card image using the full overlay area
+    cardOverlay.addEventListener('mousemove', (event) => {
+        const rect = cardOverlay.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        const rotateY = ((x / rect.width) - 0.5) * 30;
+        const rotateX = ((y / rect.height) - 0.5) * -30;
+        expandedCardImage.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+    });
+
+    cardOverlay.addEventListener('mouseleave', () => {
+        expandedCardImage.style.transform = 'rotateY(0deg) rotateX(0deg)';
+    });
+
+    console.log("Overlay should now be visible"); // Debug log
+}
+
+
+// Event delegation for dynamically loaded card images
+cardList.addEventListener("click", (e) => {
+    if (e.target.classList.contains("portfolio-card-image")) {
+        console.log("Card image clicked:", e.target.src); // Debug log
+        showCardOverlay(e.target.src);
+    }
+});
+
+// Hide overlay when clicking outside the card detail
+cardOverlay.addEventListener("click", (e) => {
+    if (e.target === cardOverlay) {
+        console.log("Overlay clicked to close"); // Debug log
+        cardOverlay.classList.remove("visible");
+        expandedCardImage.style.transform = 'rotateY(0deg) rotateX(0deg)'; // Reset any tilt
     }
 });

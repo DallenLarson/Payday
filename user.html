@@ -37,20 +37,19 @@
         </section>
 
         <!-- Card Detail Overlay -->
-        <div id="cardOverlay" class="card-overlay hidden">
-            <div class="card-detail-container">
-                <div class="card-image-container" id="cardImageContainer">
-                    <img id="expandedCardImage" class="expanded-card-image" alt="Card Image" />
-                </div>
-                <div class="card-info-box">
-                    <h2 id="cardName">Card Name</h2>
-                    <p><strong>Set:</strong> <span id="cardSet">Set Name</span></p>
-                    <p><strong>Value:</strong> <span id="cardValue">$0.00</span></p>
-                    <p><strong>Pokédex Entry:</strong> <span id="pokedexEntry">Entry not available.</span></p>
-                    <button id="removeCardButton" class="remove-button">Remove from Portfolio</button>
-                </div>
-            </div>
+<div id="cardOverlay" class="card-overlay">
+    <div class="card-detail-container" id="cardDetailContainer">
+        <img id="expandedCardImage" src="" class="expanded-card-image" alt="Expanded Card Image" />
+        <!-- Info Box beside the image -->
+        <div class="card-info-box" id="cardInfoBox">
+            <h2 id="cardInfoName">Card Name</h2>
+            <p id="cardInfoSet">Set: N/A</p>
+            <p id="cardInfoPrice">Price: $0.00</p>
+            <button id="removeCardButton" class="remove-button">Remove from Portfolio</button>
         </div>
+    </div>
+</div>
+
 
         <!-- Portfolio Section -->
         <section class="card-list-section">
@@ -74,8 +73,9 @@
         <a href="index.html" class="nav-icon" id="home-icon"><i class="fas fa-home"></i></a>
         <a href="search.html" class="nav-icon" id="search-icon"><i class="fas fa-search"></i></a>
         <a href="scanner.html" class="nav-icon" id="scanner-icon"><i class="fas fa-camera"></i></a>
-        <a href="portfolio.html" class="nav-icon" id="account-icon"><i class="fas fa-user"></i></a>
+        <a href="user.html" class="nav-icon" id="account-icon"><i class="fas fa-user"></i></a>
     </footer>
+
 
     <!-- Scripts -->
     <script type="module" src="user-profile.js"></script>

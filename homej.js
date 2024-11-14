@@ -48,9 +48,6 @@ async function updatePortfolioSummary() {
 
         if (!portfolioDoc.exists()) {
             console.log("No portfolio data found for this user.");
-            portfolioValueElement.textContent = "$0.00";
-            portfolioChangeElement.textContent = "▲ $0.00 (0.00%) This Week";
-            portfolioChangeElement.className = "neutral";
             return;
         }
 
@@ -121,7 +118,6 @@ async function loadPortfolioData(userId) {
             calculatePortfolioValues(portfolio);
 
             // Update the chart with the default range (e.g., 1W) on load
-            updateChart("1W"); // Ensures initial view displays correctly
         } else {
             console.log("No portfolio data found for this user.");
         }
@@ -272,9 +268,22 @@ function updateChart(range) {
 
 window.updateChart = updateChart;
 
-window.onload = async () => {
-    updateChart("1W");
+// Ensure this script runs after both data loading and authentication state check.
+window.onload = () => {
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            await loadPortfolioData(user.uid); // Ensure portfolio data is fully loaded
+            await updatePortfolioSummary(); // Update portfolio summary before updating chart
+
+            // Now update the chart with "This Week" data after data has loaded
+            updateChart("1W");
+        } else {
+            window.location.href = "login.html";
+        }
+    });
 };
+
+
 async function fetchTopCards() {
     try {
         const response = await fetch(`https://api.pokemontcg.io/v2/cards?q=set.name:"Surging Sparks"`, {

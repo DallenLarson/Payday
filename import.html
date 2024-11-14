@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Deck | Payday</title>
+    <link rel="stylesheet" href="import.css">
+</head>
+<body>
+    <header>
+        <a href="index.html">
+            <img src="logo.png" alt="Logo" class="logo">
+        </a>
+        <h1>Import Deck</h1>
+    </header>
+
+    <section class="import-section">
+        <textarea id="deckInput" placeholder="Paste your deck list here..."></textarea>
+        <button onclick="importDeck()">Import Deck</button>
+    </section>
+
+    <div id="deckResults" class="deck-results">
+        <h2>Deck Details</h2>
+        <div id="cardList"></div>
+        <h3 id="totalCost">Total Cost: $0.00</h3>
+    </div>
+
+    <!-- Importing JavaScript -->
+    <script type="module" src="import.js"></script>
+</body>
+</html>
