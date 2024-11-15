@@ -17,27 +17,92 @@ let portfolioData = {
 };
 
 // Initialize chart
+// Updated Chart Initialization
 let portfolioChart = new Chart(document.getElementById('portfolioChart').getContext('2d'), {
     type: 'line',
     data: {
-        labels: [],  // Empty labels to be updated
+        labels: [], // Updated dynamically
         datasets: [{
             label: "Portfolio Value",
             data: [],
             borderColor: '#00ff9d',
-            fill: false
+            borderWidth: 2,
+            fill: false,
+            pointRadius: 0 // Remove data point circles
         }]
     },
     options: {
-        scales: {
-            x: { display: true, title: { display: true, text: 'Date' } },
-            y: { display: true, beginAtZero: false }
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+            mode: 'index',
+            intersect: false
         },
         plugins: {
-            legend: { display: false }
+            legend: { display: false },
+            tooltip: { enabled: false } // Disable default tooltips
+        },
+        scales: {
+            x: { display: false }, // Remove X-axis labels
+            y: { display: false }  // Remove Y-axis labels
+        },
+        // Persistent hover line and label functionality
+        onHover: (event, chartElement) => {
+            const canvas = portfolioChart.canvas;
+            const ctx = portfolioChart.ctx;
+            const element = chartElement[0];
+            const chartRect = canvas.getBoundingClientRect();
+
+            // Clear previous hover artifacts
+            portfolioChart.update();
+
+            if (element) {
+                const datasetIndex = element.datasetIndex;
+                const index = element.index;
+
+                // Get hovered value and label
+                const hoveredValue = portfolioChart.data.datasets[datasetIndex].data[index];
+                let hoveredLabel = portfolioChart.data.labels[index];
+
+                // For 1D range, show time instead of date
+                if (hoveredLabel.includes(':')) {
+                    hoveredLabel = hoveredLabel.split(' ')[1]; // Show only the time
+                }
+
+                // Update portfolio value
+                document.getElementById('portfolioValue').textContent = `$${hoveredValue.toFixed(2)}`;
+
+                // Draw hover line
+                const xPosition = chartRect.left + element.element.x;
+                ctx.save();
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(element.element.x, 0);
+                ctx.lineTo(element.element.x, canvas.height);
+                ctx.stroke();
+
+                // Draw label above chart
+                ctx.font = "12px Arial";
+                ctx.fillStyle = 'white';
+                const textWidth = ctx.measureText(hoveredLabel).width;
+                const textX = element.element.x - textWidth / 2;
+                ctx.fillText(hoveredLabel, textX, 10);
+                //ctx.restore();
+            } else {
+                // On mouse out, restore the portfolio value to its original
+                //updatePortfolioSummary();
+            }
+        },
+        onLeave: () => {
+            // Clear hover effects and reset portfolio value
+            portfolioChart.update();
+            updatePortfolioSummary();
         }
     }
 });
+
+
 
 async function updatePortfolioSummary() {
     const user = auth.currentUser;

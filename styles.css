@@ -225,14 +225,6 @@ th {
     margin-bottom: 10px;
 }
 
-.green {
-    color: #00ff9d;
-}
-
-.red {
-    color: #ff4d4d;
-}
-
 
 
 .nav-button:hover {
@@ -482,16 +474,17 @@ th {
 
 .portfolio-overview h2 {
     font-size: 3em;
-    color: #00ff9d;
+    color: #f2ca31;
     margin: 10px 0;
 }
 
+
 .green {
-    color: #00ff9d;
+    color: #26ff00;
 }
 
 .red {
-    color: #ff4d4f;
+    color: #f30000;
 }
 
 /* Chart Container Styling */

@@ -11,7 +11,7 @@
     <meta property="og:image" content="logo.png">
     <meta property="og:type" content="website">
     
-    <title>Loading... | Payday</title>
+    <title>Loading... | Payday Cards</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="card.css">
     <!-- Font Awesome for icons -->
@@ -19,15 +19,15 @@
 </head>
 
 <body>
-    <a href="index.html">
-        <img src="logo.png" alt="Pokémon Card Search Logo" class="logo">
-    </a>
-    <div class="right-section">
-        <a href="index.html" class="nav-button">Home</a>
-        <a href="search.html" class="nav-button">Search</a>
-        <a href="scanner.html" class="nav-button">Scanner</a>
-        <a href="user.html" class="nav-button">Account</a>
-    </div>
+    
+    <div id="header-container"></div> <!-- Placeholder for the header -->
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('header-container').innerHTML = data)
+            .catch(error => console.error('Error loading header:', error));
+    </script>
+
 
     <div class="card-container">
         <div class="card-image">
