@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 10 Decks | Payday</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="search-bar-search">
+        <div class="left-section">
+            <a href="index.html">
+                <img src="logo.png" alt="Payday Logo" class="logo">
+            </a>
+            <input type="text" id="searchInput" placeholder="Enter Pokémon card name...">
+            <select id="sortDropdown">
+                <option value="date-new">Release Date (Newest)</option>
+                <option value="date-old">Release Date (Oldest)</option>
+                <option value="price-high">Price (Highest)</option>
+                <option value="price-low">Price (Lowest)</option>
+                <option value="set-name">Set Name (A-Z)</option>
+            </select>
+        </div>
+        <div class="right-section">
+            <a href="index.html" class="nav-button">Home</a>
+            <a href="decks.html" class="nav-button">Top Decks</a>
+        </div>
+    </header>
+
+    <section class="top-cards-section">
+        <h1>Top 10 Decks</h1>
+        <table id="decksTable">
+            <thead>
+                <tr>
+                    <th onclick="sortTable('rank', this)"># <span class="arrow"></span></th>
+                    <th onclick="sortTable('name', this)">Deck <span class="arrow"></span></th>
+                    <th>Image</th>
+                    <th onclick="sortTable('points', this)">Points <span class="arrow">&#x25BC;</span></th>
+                    <th onclick="sortTable('share', this)">Share <span class="arrow"></span></th>
+                    <th onclick="sortTable('price', this)">Price <span class="arrow"></span></th>
+                </tr>
+            </thead>
+            <tbody id="decksBody">
+                <!-- Deck rows will be populated here -->
+            </tbody>
+        </table>
+    </section>
+
+    <script>
+        const apiKey = '7e56dabe-1394-4d6e-aa3b-f7250070b899';
+
+        const topDecks = [
+            { name: "Regidrago VSTAR", points: 1996, share: 16.83, cardId: "swsh12-136" },
+            { name: "Lugia Archeops", points: 1526, share: 12.87, cardId: "swsh12-139" },
+            { name: "Raging Bolt ex", points: 1419, share: 11.96, cardId: "sv5-123" },
+            { name: "Charizard ex", points: 1117, share: 9.42, cardId: "sv3-125" },
+            { name: "Iron Thorns ex", points: 709, share: 5.98, cardId: "sv6-77" },
+            { name: "Snorlax Stall", points: 671, share: 5.66, cardId: "pgo-55" },
+            { name: "Terapagos ex", points: 663, share: 5.59, cardId: "sv7-128" },
+            { name: "Gardevoir ex", points: 631, share: 5.32, cardId: "sv1-86" },
+            { name: "Dragapult ex", points: 481, share: 4.06, cardId: "sv6-130" },
+            { name: "Palkia VSTAR", points: 361, share: 3.04, cardId: "swsh10-40" },
+        ];
+
+        let currentSortColumn = 'points';
+        let sortDirection = -1; // -1 for descending, 1 for ascending
+
+        async function fetchCardData(cardId) {
+            const url = `https://api.pokemontcg.io/v2/cards/${cardId}`;
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'X-Api-Key': apiKey,
+                        'Accept': 'application/json',
+                    }
+                });
+                const data = await response.json();
+                return data.data || null;
+            } catch (error) {
+                console.error(`Error fetching data for card ID ${cardId}:`, error);
+                return null;
+            }
+        }
+
+        async function displayTopDecks() {
+            const tableBody = document.getElementById('decksBody');
+            tableBody.innerHTML = '';
+
+            for (let i = 0; i < topDecks.length; i++) {
+                const deck = topDecks[i];
+                const cardData = await fetchCardData(deck.cardId);
+
+                const row = document.createElement('tr');
+
+                const rankCell = document.createElement('td');
+                rankCell.textContent = i + 1;
+                row.appendChild(rankCell);
+
+                const nameCell = document.createElement('td');
+                nameCell.textContent = deck.name;
+                row.appendChild(nameCell);
+
+                const imageCell = document.createElement('td');
+                if (cardData && cardData.images) {
+                    const img = document.createElement('img');
+                    img.src = cardData.images.large;
+                    img.alt = deck.name;
+                    img.className = 'top-card-image';
+                    img.onclick = () => window.location.href = `card.html?id=${deck.cardId}`;
+                    imageCell.appendChild(img);
+                } else {
+                    imageCell.textContent = 'Image not available';
+                }
+                row.appendChild(imageCell);
+
+                const pointsCell = document.createElement('td');
+                pointsCell.textContent = deck.points;
+                row.appendChild(pointsCell);
+
+                const shareCell = document.createElement('td');
+                shareCell.textContent = `${deck.share}%`;
+                row.appendChild(shareCell);
+
+                const priceCell = document.createElement('td');
+                if (cardData && cardData.cardmarket && cardData.cardmarket.prices) {
+                    const price = cardData.cardmarket.prices.averageSellPrice || 'N/A';
+                    priceCell.textContent = `$${price.toFixed(2)}`;
+                } else {
+                    priceCell.textContent = 'Price not available';
+                }
+                row.appendChild(priceCell);
+
+                tableBody.appendChild(row);
+            }
+        }
+
+        function sortTable(column, header) {
+            if (currentSortColumn === column) {
+                sortDirection = -sortDirection; // Reverse direction if the same column is clicked
+            } else {
+                currentSortColumn = column;
+                sortDirection = -1; // Default to descending for new columns
+            }
+
+            topDecks.sort((a, b) => {
+                let valA = a[column];
+                let valB = b[column];
+
+                if (typeof valA === 'string') valA = valA.toLowerCase();
+                if (typeof valB === 'string') valB = valB.toLowerCase();
+
+                return (valA > valB ? 1 : -1) * sortDirection;
+            });
+
+            document.querySelectorAll('.arrow').forEach(arrow => arrow.textContent = ''); // Clear all arrows
+            header.querySelector('.arrow').textContent = sortDirection === 1 ? '▲' : '▼'; // Set arrow
+
+            displayTopDecks();
+        }
+
+        displayTopDecks();
+    </script>
+</body>
+</html>

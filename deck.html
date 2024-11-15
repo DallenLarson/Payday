@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deck Details | Payday</title>
+    <link rel="stylesheet" href="account.css">
+</head>
+<body>
+    <header class="portfolio-header">
+        <h1 id="deckTitle">Deck: Regidrago VSTAR</h1>
+        <button class="back-button" onclick="window.history.back()">Back</button>
+    </header>
+
+    <section class="portfolio-container">
+        <div class="card-list-section" id="deckContent">
+            <!-- Deck list content will be populated here -->
+        </div>
+    </section>
+
+    <div id="cardOverlay" class="card-overlay hidden" onclick="closeCardOverlay(event)">
+        <div class="card-detail-container">
+            <div class="card-image-container">
+                <img id="expandedCardImage" class="expanded-card-image" src="" alt="">
+            </div>
+            <div class="card-info-box">
+                <h2 id="cardName">Card Name</h2>
+                <p id="cardSet">Set: Unknown Set</p>
+                <p id="cardValue">Price: $0.00</p>
+                <p id="pokedexEntry">Pokedex Entry: Not available</p>
+                <button class="close-button" onclick="closeCardOverlay(event)">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = '7e56dabe-1394-4d6e-aa3b-f7250070b899';
+
+        // Define the Regidrago VSTAR deck
+        const deckData = {
+            pokemon: [
+                { quantity: 3, name: "Regidrago V", ptcgoCode: "SIT", cardNumber: 135 },
+                { quantity: 3, name: "Regidrago VSTAR", ptcgoCode: "SIT", cardNumber: 136 },
+                { quantity: 3, name: "Teal Mask Ogerpon ex", ptcgoCode: "TWM", cardNumber: 25 },
+                // Add other Pokémon cards...
+            ],
+            trainer: [
+                { quantity: 4, name: "Professor's Research", ptcgoCode: "SVI", cardNumber: 189 },
+                { quantity: 3, name: "Iono", ptcgoCode: "PAL", cardNumber: 185 },
+                // Add other Trainer cards...
+            ],
+            energy: [
+                { quantity: 7, name: "Grass Energy", ptcgoCode: "SVE", cardNumber: 9 },
+                { quantity: 3, name: "Fire Energy", ptcgoCode: "SVE", cardNumber: 10 }
+            ]
+        };
+
+        // Fetch card data from API
+        async function fetchCardData(ptcgoCode, cardNumber) {
+            const url = `https://api.pokemontcg.io/v2/cards?q=set.ptcgoCode:${ptcgoCode}%20number:${cardNumber}`;
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'X-Api-Key': apiKey,
+                        'Accept': 'application/json',
+                    }
+                });
+                const data = await response.json();
+                return data.data && data.data.length > 0 ? data.data[0] : null;
+            } catch (error) {
+                console.error(`Error fetching data for ${ptcgoCode} ${cardNumber}:`, error);
+                return null;
+            }
+        }
+
+        // Display the deck list in sections (Pokémon, Trainer, Energy)
+        async function displayDeck(deck) {
+            const deckContent = document.getElementById('deckContent');
+
+            for (const category in deck) {
+                const section = document.createElement('div');
+                section.className = 'deck-section';
+                section.innerHTML = `<h2>${category.charAt(0).toUpperCase() + category.slice(1)}</h2>`;
+                
+                for (const card of deck[category]) {
+                    const cardData = await fetchCardData(card.ptcgoCode, card.cardNumber);
+                    const cardEntry = document.createElement('div');
+                    cardEntry.className = 'card-entry';
+                    cardEntry.onclick = () => openCardOverlay({
+                        imageUrl: cardData?.images?.large || 'placeholder.png',
+                        name: cardData?.name || card.name,
+                        set: cardData?.set?.name || 'Unknown Set',
+                        value: cardData?.cardmarket?.prices?.averageSellPrice || 0,
+                        pokedexEntry: cardData?.flavorText || 'Entry not available.'
+                    });
+
+                    cardEntry.innerHTML = `
+                        <img src="${cardData?.images?.small || 'placeholder.png'}" alt="${card.name}" class="portfolio-card-image">
+                        <div class="card-details">
+                            <p class="card-name">${card.quantity}x ${card.name}</p>
+                            <div class="qty-price-container">
+                                <span class="card-price">$${(cardData?.cardmarket?.prices?.averageSellPrice || 0).toFixed(2)}</span>
+                            </div>
+                        </div>
+                    `;
+                    section.appendChild(cardEntry);
+                }
+                deckContent.appendChild(section);
+            }
+        }
+
+        // Open the overlay with card details
+        function openCardOverlay(card) {
+            document.getElementById("expandedCardImage").src = card.imageUrl;
+            document.getElementById("cardName").textContent = card.name;
+            document.getElementById("cardSet").textContent = `Set: ${card.set}`;
+            document.getElementById("cardValue").textContent = `Price: $${card.value.toFixed(2)}`;
+            document.getElementById("pokedexEntry").textContent = card.pokedexEntry;
+
+            const overlay = document.getElementById("cardOverlay");
+            overlay.classList.remove("hidden");
+            overlay.style.opacity = "1";
+        }
+
+        // Close the overlay
+        function closeCardOverlay(event) {
+            if (event.target === document.getElementById("cardOverlay") || event.target.classList.contains("close-button")) {
+                const overlay = document.getElementById("cardOverlay");
+                overlay.style.opacity = "0";
+                setTimeout(() => overlay.classList.add("hidden"), 300);
+            }
+        }
+
+        // Load the deck data on page load
+        displayDeck(deckData);
+    </script>
+</body>
+</html>

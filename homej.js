@@ -1,6 +1,7 @@
 import { auth, db } from "./firebaseConfig.js";
 import { onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+import { collection, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+import { getDocs } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
 const logoutButton = document.getElementById('logoutButton');
 const portfolioValueElement = document.getElementById('portfolioValue');
@@ -267,6 +268,102 @@ function updateChart(range) {
 }
 
 window.updateChart = updateChart;
+
+async function getTopViewedCards() {
+    const now = Date.now();
+    const oneDayAgo = now - 24 * 60 * 60 * 1000; // 24 hours
+    const eightyFiveDaysAgo = now - 2048 * 60 * 60 * 1000; // 2048 hours
+
+    try {
+        const cardViewsRef = collection(db, "cardViews");
+        const snapshot = await getDocs(cardViewsRef);
+
+        const views = [];
+
+        snapshot.forEach(doc => {
+            const viewData = doc.data();
+            const recentViews = viewData.views.filter(
+                view => view.toMillis() >= oneDayAgo
+            );
+            const fallbackViews = viewData.views.filter(
+                view => view.toMillis() >= eightyFiveDaysAgo
+            );
+            views.push({
+                cardId: doc.id,
+                count: recentViews.length || fallbackViews.length,
+                fallback: recentViews.length === 0 && fallbackViews.length > 0,
+            });
+        });
+
+        // Sort by view count
+        const topCards = views
+            .filter(v => v.count > 0) // Ensure there's at least one view
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 5);
+
+        // If no cards found, pick 5 random cards
+        if (topCards.length === 0) {
+            const randomCards = await fetchRandomCards(5);
+            return randomCards.map(card => ({
+                cardId: card.id,
+                count: 0,
+                fallback: true,
+            }));
+        }
+
+        return topCards;
+    } catch (error) {
+        console.error("Error fetching top viewed cards:", error);
+        return [];
+    }
+}
+
+// Fetch random cards if no views exist
+async function fetchRandomCards(count) {
+    const response = await fetch(
+        `https://api.pokemontcg.io/v2/cards?pageSize=${count}`,
+        {
+            headers: {
+                "X-Api-Key": apiKey,
+                Accept: "application/json",
+            },
+        }
+    );
+    const data = await response.json();
+    return data.data || [];
+}
+
+async function displayTopViewedCards() {
+    const topCards = await getTopViewedCards();
+
+    const container = document.getElementById("trendingCardsContainer");
+    container.innerHTML = "";
+
+    for (const { cardId, count, fallback } of topCards) {
+        // Fetch card details if not in memory
+        const response = await fetch(
+            `https://api.pokemontcg.io/v2/cards/${cardId}`,
+            {
+                headers: { "X-Api-Key": apiKey },
+            }
+        );
+        const cardData = await response.json();
+
+        // Render card
+        const cardElement = document.createElement("div");
+        cardElement.className = "top-card";
+        cardElement.innerHTML = `
+            <img src="${cardData.data.images.small}" alt="${cardData.data.name}" />
+            <p>${cardData.data.name}</p>
+        `;
+
+        container.appendChild(cardElement);
+    }
+}
+
+// Call this function on home page load
+displayTopViewedCards();
+
 
 // Ensure this script runs after both data loading and authentication state check.
 window.onload = () => {

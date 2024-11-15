@@ -227,6 +227,35 @@ cardImageContainer.addEventListener('mouseleave', () => {
 // Fetch the card details when the page loads
 fetchCardDetails();
 
+async function logCardView(cardId) {
+    try {
+        console.log(`Attempting to log view for cardId: ${cardId}`); // Log the card ID being processed
+        const cardRef = doc(db, "cardViews", cardId);
+        await updateDoc(cardRef, {
+            views: arrayUnion(Timestamp.now()) // Add a new timestamp to the 'views' array
+        });
+        console.log(`Successfully logged view for cardId: ${cardId}`); // Log success
+    } catch (error) {
+        console.error("Error logging card view:", error);
+
+        // If the document doesn't exist, create it
+        if (error.code === 'not-found') {
+            console.log(`Card document not found for cardId: ${cardId}, creating a new document...`);
+            await setDoc(doc(db, "cardViews", cardId), { views: [Timestamp.now()] });
+            console.log(`Created new document and logged view for cardId: ${cardId}`);
+        }
+    }
+}
+
+
+// Call this function after fetching card details
+fetchCardDetails().then(() => {
+    if (cardId) {
+        logCardView(cardId);
+    }
+});
+
+
 const commentsList = document.getElementById('comments-list');
 const postCommentButton = document.getElementById('postCommentButton');
 const commentText = document.getElementById('commentText');

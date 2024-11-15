@@ -20,6 +20,48 @@ body {
     align-items: center;
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    text-align: center;
+}
+
+th, td {
+    padding: 15px;
+    border-bottom: 1px solid #333;
+}
+
+th {
+    cursor: pointer;
+    background-color: #333;
+}
+
+.top-card-image {
+    width: 120px;
+    transition: transform 0.3s ease;
+}
+
+.top-card-image:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.top-card-entry {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.top-card-entry:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
 .search-bar-search {
     display: flex;
     justify-content: space-between; /* Aligns sections to far left and right */
@@ -136,6 +178,21 @@ body {
 }
 
 #topCardsContainer {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto; /* Allow horizontal scrolling on smaller screens */
+}
+
+
+.trending-cards-section {
+    margin-top: 30px;
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#trendingCardsContainer {
     display: flex;
     gap: 15px;
     overflow-x: auto; /* Allow horizontal scrolling on smaller screens */
@@ -617,6 +674,7 @@ body {
     border-top: 1px solid #333;
     z-index: 1000;
 }
+
 
 .mobile-nav-footer .nav-icon {
     color: #ffffff;
