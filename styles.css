@@ -431,7 +431,7 @@ th {
 }
 
 .footer a:hover {
-    color: #ff9800;
+    color: #f2ca31;
     text-decoration: underline;
 }
 
@@ -693,4 +693,27 @@ th {
         margin-top: 10px;
         padding: 0 5px;
     }
+}
+
+.recently-viewed-cards {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 10px;
+}
+
+.recently-viewed-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+    background-color: #1a1a1a;
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.recently-viewed-card img {
+    max-width: 100%;
+    border-radius: 5px;
 }

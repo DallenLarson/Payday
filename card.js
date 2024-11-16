@@ -7,6 +7,20 @@ const cardId = urlParams.get('id');
 
 // Fetch and display card details
 // Modify this part in fetchCardDetails
+
+function logRecentlyViewedCard(cardId) {
+    const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
+    
+    // Remove the card if it already exists to avoid duplicates
+    const updatedViewed = recentlyViewed.filter(id => id !== cardId);
+
+    // Add the current card to the end of the array
+    updatedViewed.push(cardId);
+
+    // Save only the last 10 viewed cards
+    localStorage.setItem("recentlyViewed", JSON.stringify(updatedViewed.slice(-10)));
+}
+
 async function fetchCardDetails() {
     const cardContainer = document.getElementById('cardImage'); // Move this to the top
     if (!cardContainer) {
@@ -223,10 +237,6 @@ cardImageContainer.addEventListener('mouseleave', () => {
     cardImage.style.transform = 'rotateY(0deg) rotateX(0deg)';
 });
 
-
-// Fetch the card details when the page loads
-fetchCardDetails();
-
 async function logCardView(cardId) {
     try {
         console.log(`Attempting to log view for cardId: ${cardId}`); // Log the card ID being processed
@@ -252,6 +262,7 @@ async function logCardView(cardId) {
 fetchCardDetails().then(() => {
     if (cardId) {
         logCardView(cardId);
+        logRecentlyViewedCard(cardId);
     }
 });
 

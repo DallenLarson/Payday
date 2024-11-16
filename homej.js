@@ -9,6 +9,58 @@ const portfolioChangeElement = document.getElementById('portfolioChange');
 
 const apiKey = '7e56dabe-1394-4d6e-aa3b-f7250070b899';
 
+async function fetchRecentlyViewedCards() {
+    const recentlyViewedSection = document.getElementById("recently-viewed-section");
+    const recentlyViewedContainer = document.getElementById("recentlyViewedContainer");
+
+    // Retrieve recently viewed card IDs from localStorage
+    const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
+
+    if (recentlyViewed.length === 0) {
+        // Hide the section if no recently viewed cards exist
+        recentlyViewedSection.style.display = "none";
+        return;
+    }
+
+    // Fetch details for the last 5 cards
+    const cardsToShow = recentlyViewed.slice(-5);
+    recentlyViewedContainer.innerHTML = ""; // Clear container
+
+    for (const cardId of cardsToShow) {
+        try {
+            const response = await fetch(`https://api.pokemontcg.io/v2/cards/${cardId}`, {
+                headers: {
+                    'X-Api-Key': apiKey,
+                    'Accept': 'application/json',
+                },
+            });
+            const data = await response.json();
+            const card = data.data;
+
+            // Create a card element
+            const cardElement = document.createElement("div");
+            cardElement.className = "recently-viewed-card";
+            cardElement.innerHTML = `
+                <a href="card.html?id=${cardId}">
+                    <img src="${card.images.small}" alt="${card.name}">
+                    <p>${card.name}</p>
+                </a>
+            `;
+
+            recentlyViewedContainer.appendChild(cardElement);
+        } catch (error) {
+            console.error(`Error fetching card ${cardId}:`, error);
+        }
+    }
+
+    // Show the section if cards are available
+    recentlyViewedSection.style.display = "block";
+}
+
+// Call this function on home page load
+fetchRecentlyViewedCards();
+
+
 // Portfolio data structure to store cumulative values by range
 let portfolioData = {
     "1D": { values: [], labels: [] },
