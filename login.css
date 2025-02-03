@@ -55,7 +55,7 @@ body {
 }
 
 .input-field:focus {
-    border-color: #00ff9d;
+    border-color: #f2ca31;
 }
 
 /* Remember Me Checkbox */
@@ -73,7 +73,7 @@ body {
 
 /* Submit Button */
 .submit-button {
-    background-color: #00ff9d;
+    background-color: #f2ca31;
     color: #000000;
     border: none;
     padding: 12px;
@@ -84,7 +84,7 @@ body {
 }
 
 .submit-button:hover {
-    background-color: #00d07d;
+    background-color: #f2ca31;
 }
 
 /* Links */
@@ -93,7 +93,7 @@ body {
 }
 
 .link {
-    color: #00ff9d;
+    color: #f2ca31;
     text-decoration: none;
     font-size: 0.9em;
 }
@@ -110,6 +110,6 @@ body {
 }
 
 .register-link a {
-    color: #00ff9d;
+    color: #f2ca31;
     text-decoration: none;
 }

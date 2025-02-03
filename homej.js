@@ -22,8 +22,8 @@ async function fetchRecentlyViewedCards() {
         return;
     }
 
-    // Fetch details for the last 5 cards
-    const cardsToShow = recentlyViewed.slice(-5);
+    // Fetch details for the last 5 cards, reversed to show newest on the left
+    const cardsToShow = recentlyViewed.slice(-5).reverse();
     recentlyViewedContainer.innerHTML = ""; // Clear container
 
     for (const cardId of cardsToShow) {
@@ -56,6 +56,7 @@ async function fetchRecentlyViewedCards() {
     // Show the section if cards are available
     recentlyViewedSection.style.display = "block";
 }
+
 
 // Call this function on home page load
 fetchRecentlyViewedCards();

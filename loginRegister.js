@@ -48,7 +48,7 @@ authForm.addEventListener("submit", async (event) => {
         if (isLoginMode) {
             // Login
             await signInWithEmailAndPassword(auth, email, password);
-            window.location.href = "index.html";
+            window.location.href = "home";
         } else {
             // Register
             const username = usernameField.value.trim();
@@ -68,7 +68,7 @@ authForm.addEventListener("submit", async (event) => {
                 email: user.email
             });
 
-            window.location.href = "index.html";
+            window.location.href = "home";
         }
         authForm.reset();
     } catch (error) {

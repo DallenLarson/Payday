@@ -11,7 +11,9 @@ async function displayAllUsers() {
     usersSnapshot.forEach(doc => {
         const userData = doc.data();
         const username = userData.username || "Unknown User";
-        const profilePic = userData.profilePic || "placeholder.png"; // Use a default image if profile picture is unavailable
+        const PROFILE_PIC_FOLDER = 'pfp/';
+        const profilePics = Array.from({ length: 42 }, (_, i) => `avi${i + 1}.png`);
+        const profilePic = userData.profilePic || `${PROFILE_PIC_FOLDER}${profilePics[Math.floor(Math.random() * profilePics.length)]}`;
         const isDev = userData.isDev || false;
 
         // Create user container

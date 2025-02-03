@@ -90,7 +90,10 @@ async function displayPortfolio(sortBy = 'alphabet') {
         cardContainer.className = "card-entry";
 
         const cardImage = document.createElement("img");
-        cardImage.src = card.images?.small || "placeholder.png";
+        
+        const PROFILE_PIC_FOLDER = 'pfp/';
+        const profilePics = Array.from({ length: 42 }, (_, i) => `avi${i + 1}.png`);
+        cardImage.src = card.images?.small || `${PROFILE_PIC_FOLDER}${profilePics[Math.floor(Math.random() * profilePics.length)]}`;
         cardImage.alt = card.name;
         cardImage.className = "portfolio-card-image";
 
