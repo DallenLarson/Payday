@@ -41,11 +41,25 @@ async function displayUserProfile() {
     if (userDoc.exists()) {
         const userData = userDoc.data();
         document.querySelector("#userName").textContent = "@" + (userData.username || "Unknown User");
-        const PROFILE_PIC_FOLDER = 'pfp/';
-const profilePics = Array.from({ length: 42 }, (_, i) => `avi${i + 1}.png`);
-const profilePic = userData.profilePic || `${PROFILE_PIC_FOLDER}${profilePics[Math.floor(Math.random() * profilePics.length)]}`;
-document.querySelector("#profilePic").src = profilePic;
 
+        const PROFILE_PIC_FOLDER = 'pfp/';
+        const profilePics = Array.from({ length: 42 }, (_, i) => `avi${i + 1}.png`);
+        let profilePic = userData.profilePic;
+
+        if (!profilePic) {
+            // Randomly pick a new profile picture
+            profilePic = `${PROFILE_PIC_FOLDER}${profilePics[Math.floor(Math.random() * profilePics.length)]}`;
+
+            // Save it to Firestore
+            try {
+                await setDoc(userDocRef, { profilePic }, { merge: true });
+                console.log("New profile picture saved:", profilePic);
+            } catch (error) {
+                console.error("Error saving profile picture:", error);
+            }
+        }
+
+        document.querySelector("#profilePic").src = profilePic;
 
         const isDev = userData.isDev || false;
         if (isDev) {
@@ -60,6 +74,7 @@ document.querySelector("#profilePic").src = profilePic;
         console.log("User document not found.");
     }
 }
+
 
 async function loadPortfolio(userId) {
     const portfolioRef = doc(db, "portfolios", userId);

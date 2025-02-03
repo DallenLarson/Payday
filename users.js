@@ -1,6 +1,6 @@
 // Import Firebase and Firestore methods
 import { db } from "./firebaseConfig.js";
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+import { collection, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
 // Fetch and display all users
 async function displayAllUsers() {
@@ -8,12 +8,27 @@ async function displayAllUsers() {
     const usersCollection = collection(db, "users");
     const usersSnapshot = await getDocs(usersCollection);
 
-    usersSnapshot.forEach(doc => {
-        const userData = doc.data();
+    const PROFILE_PIC_FOLDER = 'pfp/';
+    const profilePics = Array.from({ length: 42 }, (_, i) => `avi${i + 1}.png`);
+
+    usersSnapshot.forEach(async (userDoc) => {
+        const userData = userDoc.data();
         const username = userData.username || "Unknown User";
-        const PROFILE_PIC_FOLDER = 'pfp/';
-        const profilePics = Array.from({ length: 42 }, (_, i) => `avi${i + 1}.png`);
-        const profilePic = userData.profilePic || `${PROFILE_PIC_FOLDER}${profilePics[Math.floor(Math.random() * profilePics.length)]}`;
+        let profilePic = userData.profilePic;
+
+        // If no profile picture exists, assign a random one and save it
+        if (!profilePic) {
+            profilePic = `${PROFILE_PIC_FOLDER}${profilePics[Math.floor(Math.random() * profilePics.length)]}`;
+
+            try {
+                const userDocRef = doc(db, "users", userDoc.id);
+                await setDoc(userDocRef, { profilePic }, { merge: true });
+                console.log(`Assigned and saved new profile picture for ${username}: ${profilePic}`);
+            } catch (error) {
+                console.error(`Error saving profile picture for ${username}:`, error);
+            }
+        }
+
         const isDev = userData.isDev || false;
 
         // Create user container
